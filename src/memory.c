@@ -60,6 +60,55 @@ void fill_memory(Block *block, int start, int end, unsigned char value) {
 		block->data[i] = value;
 }
 
+static inline int sprintf_digit(char *string, int i) {
+	char *base = string;
+
+	int digit_34 = i / 16 % 256;
+	int digit_12 = i / 4096; assert(digit_12 < 256);
+	string += sprintf(string, "%02X%02X0 ", digit_12, digit_34);
+
+	int offset = string - base;
+	return offset;
+}
+
+static inline int sprintf_data_hex(
+		char *string, Block *block, int start, int end, int base_index)
+{
+	char *base = string;
+
+	for (int i = 0; i < 16; ++i) {
+		int index = base_index + i;
+		int value = block->data[index];
+
+		if (start <= index && index <= end)
+			string += sprintf(string, "%02X ", value);
+		else
+			string += sprintf(string, "   ");
+	}
+
+	int offset = string - base;
+	return offset;
+}
+
+static inline int sprintf_data_char(
+		char *string, Block *block, int start, int end, int base_index)
+{
+	char *base = string;
+
+	for (int i = 0; i < 16; ++i) {
+		int index = base_index + i;
+		int value = block->data[index];
+
+		if (index < start || end < index || value < X20 || X7E < value)
+			string += sprintf(string, ". ");
+		else
+			string += sprintf(string, "%c ", value);
+	}
+
+	int offset = string - base;
+	return offset;
+}
+
 char *dump_memory(Block *block, int start, int end) {
 	char *string = malloc(sizeof(char) * MAX_DUMP_LENGTH);
 	char *full_string = string;
@@ -71,33 +120,10 @@ char *dump_memory(Block *block, int start, int end) {
 	block->current = end + 1;
 	
 	for (int i = start / 16 * 16; i < end / 16 * 16 + 16; i += 16) {
-		int digit_34 = i / 16 % 256;
-		int digit_12 = i / 4096; assert(digit_12 < 256);
-		string += sprintf(string, "%02X%02X0 ", digit_12, digit_34);
-		// the above expession appends a formatted string to 'string'
-
-		for (int j = 0; j < 16; ++j) {
-			int index = i + j;
-			int value = block->data[index];
-
-			if (start <= index && index <= end)
-				string += sprintf(string, "%02X ", value);
-			else
-				string += sprintf(string, "   ");
-		}
-				
+		string += sprintf_digit(string, i);
+		string += sprintf_data_hex(string, block, start, end, i);
 		string += sprintf(string, "; ");
-
-		for (int j = 0; j < 16; ++j) {
-			int index = i + j;
-			int value = block->data[index];
-
-			if (i + j < start || end < i + j || value < X20 || X7E < value)
-				string += sprintf(string, ". ");
-			else
-				string += sprintf(string, "%c ", value);
-		}
-
+		string += sprintf_data_char(string, block, start, end, i);
 		string += sprintf(string, "\n");
 	}
 
