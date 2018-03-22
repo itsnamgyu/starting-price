@@ -3,9 +3,11 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+#ifdef TEST
 int main(void) {
 	fprint_dir(stdout);
 }
+#endif
 
 void fprint_dir(FILE *out) {
 	struct dirent *entry;
