@@ -18,6 +18,7 @@ typedef struct _History {
 } History;
 */
 
+#ifdef TEST
 int main(void) {
 	for (int i = 0; i < 20; ++i) {
 		History *history = new_history();
@@ -34,6 +35,7 @@ int main(void) {
 
 	return 0;
 }
+#endif
 
 History *new_history() {
 	History *history = malloc(sizeof(History));
@@ -69,4 +71,8 @@ void fprint_history(FILE *out, History *history) {
 	int i = 1;
 	for (HistoryNode *node = history->head->next; node; node = node->next, ++i)
 		fprintf(out, "%d\t%s\n", i, node->string);
+}
+
+int has_history(History *history) {
+	return history->head != history->last;
 }

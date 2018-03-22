@@ -20,3 +20,5 @@ void free_history(History *history);
 void add_history(History *history, char *string);
 	
 void fprint_history(FILE *out, History *history);
+
+int has_history(History *history);
