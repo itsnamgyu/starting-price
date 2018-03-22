@@ -47,6 +47,16 @@ int main(void) {
 		free(dump_string);
 	}
 
+	printf("Reset Test\n");
+
+	reset_memory(block);
+
+	for (int i = 0; i < 4; ++i) {
+		char *dump_string = dump_memory(block, -1, -1);
+		printf("%s", dump_string);
+		free(dump_string);
+	}
+
 	free(block);
 
 	return 0;
@@ -144,4 +154,10 @@ char *dump_memory(Block *block, int start, int end) {
 	}
 
 	return full_string;
+}
+
+void reset_memory(Block *block) {
+	for (int i = 0; i < BLOCK_SIZE; ++i)
+		block->data[i] = 0;
+	block->current = 0;
 }

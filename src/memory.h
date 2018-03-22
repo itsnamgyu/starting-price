@@ -16,3 +16,5 @@ void fill_memory(Block *block, int start, int end, unsigned char value);
 // Inclusive
 
 char *dump_memory(Block *block, int start, int end);
+
+void reset_memory(Block *block);
