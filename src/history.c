@@ -19,16 +19,18 @@ typedef struct _History {
 */
 
 int main(void) {
-	History *history = new_history();
+	for (int i = 0; i < 20; ++i) {
+		History *history = new_history();
 
-	add_history(history, "Hello!");
-	add_history(history, "Yo!");
-	add_history(history, "Hello!");
-	add_history(history, "Yo!");
-	add_history(history, "Hello!");
-	add_history(history, "Yo!");
-	fprint_history(stdout, history);
-	free_history(history);
+		add_history(history, "Hello!");
+		add_history(history, "Yo!");
+		add_history(history, "Hello!");
+		add_history(history, "Yo!");
+		add_history(history, "Hello!");
+		add_history(history, "Yo!");
+		fprint_history(stdout, history);
+		free_history(history);
+	}
 
 	return 0;
 }
@@ -36,6 +38,7 @@ int main(void) {
 History *new_history() {
 	History *history = malloc(sizeof(History));
 	history->head = malloc(sizeof(HistoryNode));
+	history->head->next = NULL;
 	history->last = history->head;
 
 	return history;
@@ -56,6 +59,7 @@ void free_history(History *history) {
 void add_history(History *history, char *string) {
 	HistoryNode *new_node = malloc(sizeof(HistoryNode));
 	strcpy(new_node->string, string);
+	new_node->next = NULL;
 
 	history->last->next = new_node;
 	history->last = new_node;
