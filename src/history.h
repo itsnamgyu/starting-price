@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-#define HISTORY_LENGTH 200
+#define COMMAND_LENGTH 200
 
 typedef struct _HistoryNode {
 	struct _HistoryNode *next;
-	char string[HISTORY_LENGTH];
+	char string[COMMAND_LENGTH];
 	
 } HistoryNode;
 
