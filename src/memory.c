@@ -118,6 +118,7 @@ char *dump_memory(Block *block, int start, int end) {
 	if (end >= BLOCK_SIZE) end = BLOCK_SIZE - 1;
 
 	block->current = end + 1;
+	if (block->current == BLOCK_SIZE) block->current = 0;
 	
 	for (int i = start / 16 * 16; i < end / 16 * 16 + 16; i += 16) {
 		string += sprintf_digit(string, i);
