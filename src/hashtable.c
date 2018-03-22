@@ -27,6 +27,7 @@ typedef struct _HashTable {
 } HashTable;
 */
 
+#ifdef TEST
 int main(void) {
 	for (int i = 0; i < 10; ++i) {
 
@@ -69,6 +70,7 @@ int main(void) {
 	}
 	return 0;
 }
+#endif
 
 HashTable *new_hash_table() {
 	HashTable *table = malloc(sizeof(HashTable));
