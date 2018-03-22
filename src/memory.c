@@ -22,9 +22,24 @@ int main(void) {
 		free(dump_string);
 	}
 
-	char *dump_string = dump_memory(block, 23, 48);
-	printf("%s", dump_string);
-	free(dump_string);
+	{
+		char *dump_string = dump_memory(block, 23, 48);
+		printf("%s", dump_string);
+		free(dump_string);
+	}
+
+	for (int i = 0; i < 5; ++i) {
+		char *dump_string = dump_memory(block, -1, -1);
+		printf("%s", dump_string);
+		free(dump_string);
+	}
+
+	printf("Overflow Test\n");
+	{
+		char *dump_string = dump_memory(block, BLOCK_SIZE - 4, -1);
+		printf("%s", dump_string);
+		free(dump_string);
+	}
 
 	for (int i = 0; i < 5; ++i) {
 		char *dump_string = dump_memory(block, -1, -1);
