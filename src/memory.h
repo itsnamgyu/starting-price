@@ -1,7 +1,5 @@
 #define BLOCK_SIZE 1048576
 #define MAX_DUMP_LENGTH 1000000
-#define X20 32
-#define X7E 126
 
 typedef struct _Block {
 	unsigned char data[BLOCK_SIZE];

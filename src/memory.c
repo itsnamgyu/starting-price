@@ -118,6 +118,8 @@ static inline int sprintf_data_hex(
 static inline int sprintf_data_char(
 		char *string, Block *block, int start, int end, int base_index)
 {
+	const int X20 = 32;
+	const int X7E = 126;
 	char *base = string;
 
 	for (int i = 0; i < 16; ++i) {
