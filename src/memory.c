@@ -10,6 +10,7 @@ struct Block {
 }
 */
 
+#ifdef TEST
 int main(void) {
 	Block *block = new_memory_block();
 
@@ -61,6 +62,7 @@ int main(void) {
 
 	return 0;
 }
+#endif
 
 Block *new_memory_block() {
 	Block *block = malloc(sizeof(Block));
@@ -140,7 +142,7 @@ char *dump_memory(Block *block, int start, int end) {
 	char *string = malloc(sizeof(char) * MAX_DUMP_LENGTH);
 	char *full_string = string;
 
-	if (start == -1) start = block->current; else assert(start > 0);
+	if (start == -1) start = block->current; else assert(start >= 0);
 	if (end == -1) end = start + 159;
 	if (end >= BLOCK_SIZE) end = BLOCK_SIZE - 1;
 
