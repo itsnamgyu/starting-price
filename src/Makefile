@@ -3,11 +3,17 @@ CFLAGS = -c -g -std=c99 -Wall
 
 .SUFFIXES: .c .o
 
-SRCS = dir.c hashtable.c help.c history.c memory.c 20161662.c
+ifndef MAINC
+MAINC = main.c
+endif
+
+SRCS = dir.c hashtable.c help.c history.c memory.c $(MAINC)
 
 OBJS = $(SRCS:.c=.o)
 
+ifndef TARGET
 TARGET = a.out
+endif
 
 $(TARGET) : $(OBJS)
 	$(CC) -o $@ $(OBJS) $(LIBS)
