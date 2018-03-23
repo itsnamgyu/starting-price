@@ -7,9 +7,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #define ERROR_MESSAGE_LENGTH 2000
 #define MAX_TOKENS 4
+#define OPCODE_FILE "opcode.txt"
+#define PROMPT "sicsim> "
 
 int is_comma(char c);
 
@@ -18,57 +21,59 @@ int hex_to_uint(char *string, unsigned int *value);
 int is_normal_letter(char c);
 
 int validate_and_remove_commas(char *string);
-// return false if there is a double comma
 
 int validate_and_tokenize(char *string, int *token_count, char **tokens);
 
 int is_command(char *token0, char *command, char *alias);
+
+int get_line(char *string);
+
+void load_hash_table(HashTable *table, FILE *in);
 
 int main(void) {
 	History *history = new_history();
 	HashTable *table = new_hash_table();
 	Block *block = new_memory_block();
 
-	char const * const PROMPT = "sicsim> ";
-
 	char command[COMMAND_LENGTH];
 	char processed_command[COMMAND_LENGTH];
+
+	FILE *opcode_in;
+	if (!(opcode_in = fopen(OPCODE_FILE, "r")))
+		printf("error opening opcode.txt. Continuing without opcodes\n");
+	else {
+		load_hash_table(table, opcode_in);
+		fclose(opcode_in);
+	}
 	
 	while (1) {
 		printf("%s", PROMPT);
-		// TODO: put this is function
-		int end = 0;
-		char *p = command;
-		do {
-			if (p - command == COMMAND_LENGTH - 1) {
-				printf("Invalid command\n");
-				end = 1;
-				break;
-			}
-			*p = getchar();
-		} while (*(p++) != '\n');
-		if (end) continue;
-		*(p - 1) = 0; // places null-char at \n
+		if (!get_line(command)) { 
+			printf("error: command is too long\n"); 
+			continue;
+		}
 
 		strcpy(processed_command, command);
 
 		if (!validate_and_remove_commas(processed_command)) {
-			printf("Invalid command\n"); 
-			continue;
+			printf("error: command not parsable\n"); continue;
 		}
 
 		int token_count;
 		char *tokens[MAX_TOKENS];
 		if (!validate_and_tokenize(processed_command, &token_count, tokens)) {
-			printf("Invalid command\n");
-			continue;
+			printf("error: too many arguments\n"); continue;
 		}
 
 
 		if (is_command(tokens[0], "quit", "q"))
 			return 0;
+
 		if (is_command(tokens[0], "history", "hi")) {
-			if (token_count != 1) { printf("Invalid command\n"); continue; }
+			if (token_count != 1) {
+				printf("error: history does not take any arguments\n");
+				continue;
+			}
 			int print = has_history(history);
 			add_history(history, command);
 			if (print) fprint_history(stdout, history);
@@ -76,19 +81,30 @@ int main(void) {
 		}
 		
 		if (is_command(tokens[0], "help", "h")) {
-			if (token_count != 1) { printf("Invalid command\n"); continue; }
+			if (token_count != 1) {
+				printf("error: help does not take any arguments\n");
+				continue;
+			}
 			fprint_help(stdout);
+
 		} else if (is_command(tokens[0], "dir", "d")) {
-			if (token_count != 1) { printf("Invalid command\n"); continue; }
+			if (token_count != 1) {
+				printf("error: dir does not take any arguments\n"); 
+				continue;
+			}
 			fprint_dir(stdout);
+
 		} else if (is_command(tokens[0], "dump", "du")) {
 			int start = -1;
 			int end = -1;
-			if (token_count == 4) { printf("Invalid command\n"); continue; }
+			if (token_count == 4) {
+				printf("error: dump takes up to 2 arguments\n");
+				continue; 
+			}
 			if (token_count >= 2) {
 				unsigned int value;
 				if (!hex_to_uint(tokens[1], &value) || value >= BLOCK_SIZE) {
-					printf("Invalid command\n");
+					printf("error: invalid start address\n");
 					continue;
 				}
 				start = value;
@@ -96,7 +112,7 @@ int main(void) {
 			if (token_count >= 3) {
 				unsigned int value;
 				if (!hex_to_uint(tokens[2], &value) || value >= BLOCK_SIZE || value < start) {
-					printf("Invalid command\n");
+					printf("error: invalid end address\n");
 					continue;
 				}
 				end = value;
@@ -105,46 +121,69 @@ int main(void) {
 			char *string = dump_memory(block, start, end);
 			printf("%s", string);
 			free(string);
-		} else if (is_command(tokens[0], "edit", "e")) {
-			if (token_count != 3) { printf("Invalid command\n"); continue; }
 
+		} else if (is_command(tokens[0], "edit", "e")) {
+			if (token_count != 3) {
+				printf("error: edit takes exactly 2 arguments\n");
+				continue;
+			}
 			unsigned int address;
 			if (!hex_to_uint(tokens[1], &address) || address >= BLOCK_SIZE) {
-				printf("Invalid command\n");
+				printf("error: invalid address\n");
 				continue;
 			}
 			unsigned int value;
 			if (!hex_to_uint(tokens[2], &value) || value >= 256) {
-				printf("Invalid command\n");
+				printf("error: invalid value\n");
 				continue;
 			}
 			set_memory(block, address, value);
+
 		} else if (is_command(tokens[0], "fill", "f")) {
-			if (token_count != 4) { printf("Invalid command\n"); continue; }
+			if (token_count != 4) {
+				printf("error: fill takes exactly 3 arguments\n");
+				continue;
+			}
+
 			unsigned int start;
 			if (!hex_to_uint(tokens[1], &start) || start >= BLOCK_SIZE) {
-				printf("Invalid command\n");
-				continue;
+				printf("error: invalid start address\n"); continue;
 			}
 			unsigned int end;
 			if (!hex_to_uint(tokens[2], &end) || end >= BLOCK_SIZE || end < start) {
-				printf("Invalid command\n");
-				continue;
+				printf("error: invalid end address\n"); continue;
 			}
 			unsigned int value;
 			if (!hex_to_uint(tokens[3], &value) || value >= 256) {
-				printf("Invalid command\n");
-				continue;
+				printf("error: invalid value\n"); continue;
 			}
 			fill_memory(block, start, end ,value);
+
 		} else if (!strcmp(tokens[0], "reset")) {
 			reset_memory(block);
+
 		} else if (!strcmp(tokens[0], "opcode")) {
-			if (token_count != 2) { printf("Invalid command\n"); continue; }
+			if (token_count != 2) {
+				printf("error: opcode takes exactly 1 argument\n");
+				continue;
+			}
+
+			Value value;
+			if (!find_from_hash_table(table, tokens[1], &value)) {
+				printf("Couldn't find opcode for %s\n", tokens[1]); continue;
+	 		}  else {
+				printf("opcode is %02X\n", value.opcode);
+			}
+
 		} else if (!strcmp(tokens[0], "opcodelist")) {
-			if (token_count != 1) { printf("Invalid command\n"); continue; }
+			if (token_count != 1) { 
+				printf("error: opcodelist does not take any arguments\n");
+				continue;
+			}
+			fprint_hash_table(stdout, table);
+
 		} else {
-			printf("Invalid command\n");
+			printf("error: no such command\n");
 			continue;
 		}
 
@@ -225,4 +264,30 @@ int is_command(char *token0, char *command, char *alias) {
 	if (!strcmp(token0, command)) return 1;
 	if (!strcmp(token0, alias)) return 1;
 	return 0;
+}
+
+int get_line(char *string) {
+	int end = 0;
+	char *p = string;
+
+	do {
+		if (p - string == COMMAND_LENGTH - 1) return 0;
+		*p = getchar();
+	} while (*(p++) != '\n');
+
+	*(p - 1) = 0; // places null-char at \n
+
+	return 1;
+}
+
+void load_hash_table(HashTable *table, FILE *in) {
+	unsigned int opcode;
+	char mnemonic[100];
+	char operand_count[100];
+	while (fscanf(in, "%02X %s %s", &opcode, mnemonic, operand_count) == 3) {
+		assert(opcode < 256);
+		Value value;
+		value.opcode = opcode;
+		add_to_hash_table(table, mnemonic, value);
+	}
 }
