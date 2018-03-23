@@ -17,12 +17,14 @@ int main(void) {
 	for (int i = 0; i < BLOCK_SIZE; ++i)
 		set_memory(block, i, i % 256);
 
-	for (int i = 0; i < 400; ++i) {
+	printf("Dump Test\n");
+	for (int i = 0; i < 5; ++i) {
 		char *dump_string = dump_memory(block, -1, -1);
 		printf("%s", dump_string);
 		free(dump_string);
 	}
 
+	printf("\nDump Range & Offset Test\n");
 	{
 		char *dump_string = dump_memory(block, 23, 48);
 		printf("%s", dump_string);
@@ -35,7 +37,7 @@ int main(void) {
 		free(dump_string);
 	}
 
-	printf("Overflow Test\n");
+	printf("\nOverflow Test\n");
 	{
 		char *dump_string = dump_memory(block, BLOCK_SIZE - 4, -1);
 		printf("%s", dump_string);
@@ -48,7 +50,20 @@ int main(void) {
 		free(dump_string);
 	}
 
-	printf("Reset Test\n");
+	printf("\nRange & Overflow Test\n");
+	{
+		char *dump_string = dump_memory(block, 0xFFFD7, 0xFFFE0);
+		printf("%s", dump_string);
+		free(dump_string);
+	}
+
+	for (int i = 0; i < 5; ++i) {
+		char *dump_string = dump_memory(block, -1, -1);
+		printf("%s", dump_string);
+		free(dump_string);
+	}
+
+	printf("\nReset Test\n");
 
 	reset_memory(block);
 
