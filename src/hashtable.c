@@ -85,7 +85,7 @@ HashTable *new_hash_table() {
 }
 
 static inline int hash(char *key) {
-	int hash_value = 0;
+	unsigned int hash_value = 0;
 	for (; *key; ++key) {
 		hash_value = hash_value << 1;
 		hash_value ^= *key;
