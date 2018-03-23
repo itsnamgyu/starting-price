@@ -1,2 +1,2 @@
 # starting-price
-Project For Sogang University System Programming Course CSE4100-01
+Project For Sogang University CS Course: System Programming CSE4100-01
