@@ -129,9 +129,9 @@ static inline int sprintf_data_char(
 		int value = block->data[index];
 
 		if (index < start || end < index || value < X20 || X7E < value)
-			string += sprintf(string, ". ");
+			string += sprintf(string, ".");
 		else
-			string += sprintf(string, "%c ", value);
+			string += sprintf(string, "%c", value);
 	}
 
 	int offset = string - base;
