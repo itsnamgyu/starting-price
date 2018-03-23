@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -c -g
+CFLAGS = -c -g -std=c99 -Wall
 
 .SUFFIXES: .c .o
 

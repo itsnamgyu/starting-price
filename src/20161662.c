@@ -267,7 +267,6 @@ int is_command(char *token0, char *command, char *alias) {
 }
 
 int get_line(char *string) {
-	int end = 0;
 	char *p = string;
 
 	do {
