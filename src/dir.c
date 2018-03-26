@@ -11,7 +11,6 @@ int main(void) {
 }
 #endif
 
-// Print directory
 void fprint_dir(FILE *out) {
 	struct dirent *entry;
 	DIR *directory = opendir(".");
@@ -25,7 +24,7 @@ void fprint_dir(FILE *out) {
 		if (filename[0] == '.') continue;
 
 		if (entry->d_type == DT_DIR) {
-			fprintf(out, "%s\t", filename);
+			fprintf(out, "%s/\t", filename);
 			continue;
 		}
 
