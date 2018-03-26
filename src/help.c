@@ -3,8 +3,8 @@
 #include <stdlib.h>
 
 #ifdef TEST
-// Test functions in the help module
-// Refer to the README on testing instructions
+// Manual unit test for this module
+// Refer to the README for testing instructions
 int main(void) {
 	print_help(stdout);
 

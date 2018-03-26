@@ -11,8 +11,8 @@ struct Block {
 */
 
 #ifdef TEST
-// Test functions in the memory module
-// Refer to the README on testing instructions
+// Manual unit test for this module
+// Refer to the README for testing instructions
 int main(void) {
 	Block *block = new_memory_block();
 
@@ -81,6 +81,7 @@ int main(void) {
 }
 #endif
 
+// Make sure to free after use!
 Block *new_memory_block() {
 	Block *block = malloc(sizeof(Block));
 	for (int i = 0; i < BLOCK_SIZE; ++i)
@@ -97,7 +98,7 @@ void set_memory(Block *block, int location, unsigned char value) {
 void fill_memory(Block *block, int start, int end, unsigned char value) {
 	// Inclusive, Namgyu's exception rules
 
-	if (start < 0) start = 0; // TODO: check start, end exception rules
+	if (start < 0) start = 0;
 	if (BLOCK_SIZE <= end) end = BLOCK_SIZE - 1;
 
 	for (int i = start; i <= end; i ++)
@@ -155,6 +156,7 @@ static inline int sprintf_data_char(
 	return offset;
 }
 
+// Make sure to free after use!
 char *dump_memory(Block *block, int start, int end) {
 	char *string = malloc(sizeof(char) * MAX_DUMP_LENGTH);
 	char *full_string = string;

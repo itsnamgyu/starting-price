@@ -28,8 +28,8 @@ typedef struct _HashTable {
 */
 
 #ifdef TEST
-// Test functions in the hashtable module
-// Refer to the README on testing instructions
+// Manual unit test for this module
+// Refer to the README for testing instructions
 int main(void) {
 	for (int i = 0; i < 10; ++i) {
 
@@ -74,6 +74,7 @@ int main(void) {
 }
 #endif
 
+// Must free after use!
 HashTable *new_hash_table() {
 	HashTable *table = malloc(sizeof(HashTable));
 	

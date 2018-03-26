@@ -19,8 +19,8 @@ typedef struct _History {
 */
 
 #ifdef TEST
-// Test functions in the history module
-// Refer to the README on testing instructions
+// Manual unit test for this module
+// Refer to the README for testing instructions
 int main(void) {
 	for (int i = 0; i < 20; ++i) {
 		History *history = new_history();
@@ -39,6 +39,7 @@ int main(void) {
 }
 #endif
 
+// Make sure to free after use!
 History *new_history() {
 	History *history = malloc(sizeof(History));
 	history->head = malloc(sizeof(HistoryNode));

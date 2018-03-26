@@ -4,8 +4,8 @@
 #include <sys/stat.h>
 
 #ifdef TEST
-// Test functions in the dir module
-// Refer to the README on testing instructions
+// Manual unit test for this module
+// Refer to the README for testing instructions
 int main(void) {
 	fprint_dir(stdout);
 }
@@ -16,7 +16,7 @@ void fprint_dir(FILE *out) {
 	struct dirent *entry;
 	DIR *directory = opendir(".");
 
-	// Loop every file (entry) in directory
+	// For each file in current directory
 	while ((entry = readdir(directory))) {
 		char *filename = entry->d_name;
 		struct stat buffer;
