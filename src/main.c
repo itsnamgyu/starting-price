@@ -15,20 +15,30 @@
 #define PROMPT "sicsim> "
 
 int is_comma(char c);
+// Return whether c is a comma. Functionalized for readability.
 
 int hex_to_uint(char *string, unsigned int *value);
+// Convert hex string to uint and save to value. Return success as boolean.
 
 int is_normal_letter(char c);
+// Return whether c is a normal letter (not comma, space, newline, or tab).
 
 int validate_and_remove_commas(char *string);
+// Return whether the comma sequence is valid and remove commas.
 
 int validate_and_tokenize(char *string, int *token_count, char **tokens);
+// Return whether the spacing and number of command tokens are valid and
+// save the (number of) tokens to token(s)(_count).
 
 int is_command(char *token0, char *command, char *alias);
+// Return whether the given command tokens coorespond to the given command
+// or alias.
 
 int get_line(char *string);
+// Scan one line to string and return whether it is the appropriate length.
 
 void load_hash_table(HashTable *table, FILE *in);
+// Load HashTable for the given opcode input file and save to table.
 
 int main(void) {
 	History *history = new_history();
