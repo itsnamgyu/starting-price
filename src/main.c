@@ -14,13 +14,13 @@
 #define OPCODE_FILE "opcode.txt"
 #define PROMPT "sicsim> "
 
-int is_comma(char c);
+static inline int is_comma(char c);
 // Return whether c is a comma. Functionalized for readability.
 
-int hex_to_uint(char *string, unsigned int *value);
+static inline int hex_to_uint(char *string, unsigned int *value);
 // Convert hex string to uint and save to value. Return success as boolean.
 
-int is_normal_letter(char c);
+static inline int is_normal_letter(char c);
 // Return whether c is a normal letter (not comma, space, newline, or tab).
 
 int validate_and_remove_commas(char *string);
@@ -30,11 +30,11 @@ int validate_and_tokenize(char *string, int *token_count, char **tokens);
 // Return whether the spacing and number of command tokens are valid and
 // save the (number of) tokens to token(s)(_count).
 
-int is_command(char *token0, char *command, char *alias);
+static inline int is_command(char *token0, char *command, char *alias);
 // Return whether the given command tokens coorespond to the given command
 // or alias.
 
-int get_line(char *string);
+static inline int get_line(char *string);
 // Scan one line to string and return whether it is the appropriate length.
 
 void load_hash_table(HashTable *table, FILE *in);
@@ -203,11 +203,11 @@ int main(void) {
 	return 0;
 }
 
-int is_comma(char c) {
+static inline int is_comma(char c) {
 	return c == ',';
 }
 
-int hex_to_uint(char *string, unsigned int *value) {
+static inline int hex_to_uint(char *string, unsigned int *value) {
 	int length = strlen(string);
 	char format_string[20];
 	sprintf(format_string, "%%%dX", length);
@@ -215,7 +215,7 @@ int hex_to_uint(char *string, unsigned int *value) {
 	else return 0;
 }
 
-int is_normal_letter(char c) {
+static inline int is_normal_letter(char c) {
 	if (c == ' ') return 0;
 	if (c == '\t') return 0;
 	if (c == ',') return 0;
@@ -270,13 +270,13 @@ int validate_and_tokenize(char *string, int *token_count, char **tokens) {
 	return 1;
 }
 
-int is_command(char *token0, char *command, char *alias) {
+static inline int is_command(char *token0, char *command, char *alias) {
 	if (!strcmp(token0, command)) return 1;
 	if (!strcmp(token0, alias)) return 1;
 	return 0;
 }
 
-int get_line(char *string) {
+static inline int get_line(char *string) {
 	char *p = string;
 
 	do {
