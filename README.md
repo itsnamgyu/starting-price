@@ -16,3 +16,6 @@ I apologize if the complicated folder structure got in the way of your grading.
 To make up for it, here is a gif of a rolling Ice Bear.
 
 ![Rolling Ice Bear](https://media.giphy.com/media/7HPgM7IltO4QU/giphy.gif)
+
+## Project Structure
+The file structure of this project is inspired by the [Redis Repo](https://github.com/antirez/redis/). Much thanks to all of those involved.
