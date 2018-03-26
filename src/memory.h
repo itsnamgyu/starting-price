@@ -16,12 +16,12 @@ typedef struct _Block {
 
 Block *new_memory_block();
 /*	Description
- *	Initiate memory for a valid memory block
+ *	Initiate memory for a valid memory block.
  */
 
 void set_memory(Block *block, int location, unsigned char value);
 /*	Description
- *  Find the value associated with key from table
+ *  Find the value associated with key from table.
  *
  *  Arguments
  *  char *key: key as string
@@ -33,7 +33,7 @@ void set_memory(Block *block, int location, unsigned char value);
 
 void fill_memory(Block *block, int start, int end, unsigned char value);
 /*	Description
- *  Fill the memory block with a given value from start to end (inclusive)
+ *  Fill the memory block with a given value from start to end (inclusive).
  */
 
 char *dump_memory(Block *block, int start, int end);
@@ -47,5 +47,5 @@ char *dump_memory(Block *block, int start, int end);
 
 void reset_memory(Block *block);
 /*	Description
- *  Fill the memory block with 0s
+ *  Fill the memory block with 0s.
  */

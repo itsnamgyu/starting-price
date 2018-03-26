@@ -13,22 +13,22 @@ typedef struct _History {
 	HistoryNode *last;
 } History;
 /*	Description
- *	Stores command history as a linked-list
+ *	Stores command history as a linked-list.
  */
 
 History *new_history();
 /*	Description
- *	Initiate memory for a valid history record
+ *	Initiate memory for a valid history record.
  */
 
 void free_history(History *history);
 /*	Description
- *  free memory and destroy history record
+ *  Free memory and destroy history record.
  */
 
 void add_history(History *history, char *string);
 /*	Description
- *  Add a previous command to a history record
+ *  Add a previous command to a history record.
  *
  *  Arguments
  *  char *string: the command string
@@ -37,10 +37,10 @@ void add_history(History *history, char *string);
 	
 void fprint_history(FILE *out, History *history);
 /*	Description
- *  Print the history to an output stream
+ *  Print the history to an output stream.
  */
 
 int has_history(History *history);
 /*	Description
- *  Return whether there are any commands in the history record
+ *  Return whether there are any commands in the history record.
  */
