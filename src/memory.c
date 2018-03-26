@@ -11,6 +11,8 @@ struct Block {
 */
 
 #ifdef TEST
+// Test functions in the memory module
+// Refer to the README on testing instructions
 int main(void) {
 	Block *block = new_memory_block();
 

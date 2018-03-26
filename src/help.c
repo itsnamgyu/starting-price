@@ -3,6 +3,8 @@
 #include <stdlib.h>
 
 #ifdef TEST
+// Test functions in the help module
+// Refer to the README on testing instructions
 int main(void) {
 	print_help(stdout);
 

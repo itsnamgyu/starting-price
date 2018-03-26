@@ -19,6 +19,8 @@ typedef struct _History {
 */
 
 #ifdef TEST
+// Test functions in the history module
+// Refer to the README on testing instructions
 int main(void) {
 	for (int i = 0; i < 20; ++i) {
 		History *history = new_history();

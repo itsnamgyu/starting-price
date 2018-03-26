@@ -28,6 +28,8 @@ typedef struct _HashTable {
 */
 
 #ifdef TEST
+// Test functions in the hashtable module
+// Refer to the README on testing instructions
 int main(void) {
 	for (int i = 0; i < 10; ++i) {
 
