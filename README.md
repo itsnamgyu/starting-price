@@ -2,11 +2,15 @@
 Project For Sogang University CS Course: System Programming CSE4100-01
 
 ## Usage
-Make! Run!
+Make! Run! I.e.,
+```shell
+make
+./a.out
+```
 
 ## Testing
-To test a module, define the TEST macro during compilation. For example,
-```
+To test a module, define the TEST macro during compilation. E.g.,
+```shell
 gcc -D TEST module.c
 ```
 
