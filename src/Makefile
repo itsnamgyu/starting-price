@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -std=c99 -Wall
+CFLAGS = -g -Wall
 
 .SUFFIXES: .c .o
 
@@ -20,5 +20,3 @@ $(TARGET) : $(OBJS)
 
 clean :
 	rm $(OBJS) $(TARGET)
-	
-# Made with help from juice500ml :)

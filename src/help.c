@@ -6,7 +6,7 @@
 // Manual unit test for this module
 // Refer to the README for testing instructions
 int main(void) {
-	print_help(stdout);
+	fprint_help(stdout);
 
 	return 0;
 }
