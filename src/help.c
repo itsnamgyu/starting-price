@@ -13,13 +13,15 @@ int main(void) {
 #endif
 
 void fprint_help(FILE *out) {
-	const int HELP_COUNT = 10;
+	const int HELP_COUNT = 13;
 	const char *HELP_STRINGS[] = {
 		"h[elp]", "d[ir]",
 		"q[uit]", "hi[story]",
 		"du[mp] [start, end]", "e[dit] address, value",
 		"f[ill] start, end, value", "reset",
-		"opcode mnemonic", "opcodelist"
+		"opcode mnemonic", "opcodelist",
+		"assemble filename", "type filename", 
+		"symbol"
 	};
 
 	for (int i = 0; i < HELP_COUNT; ++i)
