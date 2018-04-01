@@ -3,10 +3,17 @@
 #define COMMAND_TOO_LONG_ERROR 3
 #define ARGUMENT_TOO_LONG_ERROR 4
 
-#define COMMAND_LENGTH 100
-#define ARGUMENT_COUNT 4
-#define ARGUMENT_LENGTH 20
+#define COMMAND_LENGTH 120
+#define TOKEN_COUNT 4
+#define TOKEN_LENGTH 40
 
+/*
+ * Terminology
+ * command: the original one-line string inputted by user
+ * token: each word within command
+ * 
+ * Note that TOKEN_COUNT is the maximum number of arguments + 1
+ */
 typedef struct _ParsedCommand {
 	char tokenized_command[COMMAND_LENGTH];
 	char *operation;
