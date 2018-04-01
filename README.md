@@ -38,7 +38,7 @@ Provides the `Block` structure type that stores 1 megabyte of data as an array o
 
 **Make sure to free `Block`s after usage.**
 
-### Module `parse`
+### Module `parser`
 Provides function to parse user commands into the operator and arguments. Includes `ParsedCommands` structure type to store these parsed commands.
 
 **Make sure to free `ParsedCommand`s after usage.**

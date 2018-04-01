@@ -21,7 +21,7 @@
  */
 
 typedef struct _OperationNode {
-	char operator[OPERATION_LENGTH];
+	char operator[TOKEN_LENGTH];
 	int argument_count;
 	void *function;
 	struct _OperationNode *link;
@@ -42,6 +42,8 @@ Interpreter *new_interpreter(FILE *out);
 void free_interpreter(Interpreter *ip);
 
 void add_operation(Interpreter *ip, char *operator, 
-		           int argument_count void *function);
+		           int argument_count, void *function);
 
 int interpret(Interpreter *ip, ParsedCommand *pc);
+
+int interpret_and_free(Interpreter *ip, ParsedCommand *pc);

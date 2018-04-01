@@ -4,7 +4,7 @@
 #include "help.h"
 #include "history.h"
 #include "memory.h"
-#include "parse.h"
+#include "parser.h"
 
 #include <stdio.h>
 #include <stdlib.h>

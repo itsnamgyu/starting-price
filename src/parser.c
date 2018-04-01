@@ -1,4 +1,4 @@
-#include "parse.h"
+#include "parser.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -69,6 +69,7 @@ int main(void) {
 	assert(!strcmp(pc->arguments[1], "ko"));
 	assert(!strcmp(pc->arguments[2], "yo"));
 
+	printf("----------------------------------------\n");
 	printf("Automatic tests successful!\n");
 
 	char *test_string = "yolo \t ho, \t ho, \t yo";
