@@ -34,6 +34,7 @@ typedef struct _OperationNode {
 
 typedef struct _Interpreter {
 	OperationNode *head;
+	OperationNode *last;
 	FILE *output_stream;
 } Interpreter;
 
