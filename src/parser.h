@@ -18,6 +18,9 @@
  * 
  * Note that TOKEN_COUNT is the maximum number of arguments + 1
  */
+
+#ifndef PARSER_H
+#define PARSER_H
 typedef struct _ParsedCommand {
 	char tokenized_command[COMMAND_LENGTH];
 	char *operator;
@@ -28,3 +31,4 @@ typedef struct _ParsedCommand {
 ParsedCommand *parse_command(char *command, int *error_code);
 
 void free_parsed_command(ParsedCommand *parsed);
+#endif 
