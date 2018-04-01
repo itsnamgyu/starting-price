@@ -13,14 +13,14 @@
  * Terminology
  * command: the original one-line string inputted by user
  * token: each word within command
- * operation: the actual "command word" part of the command
+ * operator: the actual "command word" part of the command
  * argument: the arguments to the operation. (all tokens excluding operation)
  * 
  * Note that TOKEN_COUNT is the maximum number of arguments + 1
  */
 typedef struct _ParsedCommand {
 	char tokenized_command[COMMAND_LENGTH];
-	char *operation;
+	char *operator;
 	char *arguments[ARGUMENT_COUNT];
 	int argument_count;
 } ParsedCommand;
