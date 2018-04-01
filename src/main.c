@@ -1,4 +1,4 @@
-#include "dir.h"
+#include "file.h"
 #include "hashtable.h"
 #include "help.h"
 #include "history.h"
