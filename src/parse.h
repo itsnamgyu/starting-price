@@ -1,6 +1,6 @@
 #include "main.h"
 
-#define BAD_FORMAT_ERROR 1
+#define INVALID_FORMAT_ERROR 1
 #define TOO_MANY_ARGUMENTS_ERROR 2
 #define COMMAND_TOO_LONG_ERROR 3
 #define ARGUMENT_TOO_LONG_ERROR 4

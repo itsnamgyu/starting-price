@@ -1,6 +1,6 @@
-#include <stdio.h>
+#include "main.h"
 
-#define COMMAND_LENGTH 200
+#include <stdio.h>
 
 typedef struct _HistoryNode {
 	struct _HistoryNode *next;
