@@ -1,10 +1,11 @@
 #include "history.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* Recall these definitions
-#define HISTORY_LENGTH 200
+#define COMMAND_LENGTH 120
 
 typedef struct _HistoryNode {
 	struct _HistoryNode *next;
