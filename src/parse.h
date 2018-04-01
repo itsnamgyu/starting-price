@@ -5,20 +5,23 @@
 
 #define COMMAND_LENGTH 120
 #define TOKEN_COUNT 4
+#define ARGUMENT_COUNT 3
 #define TOKEN_LENGTH 40
 
 /*
  * Terminology
  * command: the original one-line string inputted by user
  * token: each word within command
+ * operation: the actual "command word" part of the command
+ * argument: the arguments to the operation. (all tokens excluding operation)
  * 
  * Note that TOKEN_COUNT is the maximum number of arguments + 1
  */
 typedef struct _ParsedCommand {
 	char tokenized_command[COMMAND_LENGTH];
 	char *operation;
-	char *tokens[ARGUMENT_COUNT];
-	int token_count;
+	char *arguments[ARGUMENT_COUNT];
+	int argument_count;
 } ParsedCommand;
 
 ParsedCommand *parse_command(char *command, int *error_code);
