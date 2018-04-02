@@ -1,10 +1,9 @@
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
 #include <stdio.h>
 
 #define HASH_TABLE_SIZE 20
 #define HASH_KEY_LENGTH 100
-
-#ifndef HASHTABLE_H
-#define HASHTABLE_H
 typedef struct _Value {
 	unsigned char opcode;
 } Value;

@@ -1,7 +1,15 @@
-#include "main.h"
-
+/*
+ * Terminology
+ * command: the original one-line string inputted by user
+ * token: each word within command
+ * operator: the actual "command word" part of the command
+ * argument: the arguments to the operation. (all tokens excluding operation)
+ * 
+ * Note that TOKEN_COUNT is the maximum number of arguments + 1
+ */
 #ifndef PARSER_H
 #define PARSER_H
+#include "main.h"
 
 #define INVALID_FORMAT_ERROR 1
 #define TOO_MANY_ARGUMENTS_ERROR 2
@@ -12,15 +20,6 @@
 #define ARGUMENT_COUNT 3
 #define TOKEN_LENGTH 40
 
-/*
- * Terminology
- * command: the original one-line string inputted by user
- * token: each word within command
- * operator: the actual "command word" part of the command
- * argument: the arguments to the operation. (all tokens excluding operation)
- * 
- * Note that TOKEN_COUNT is the maximum number of arguments + 1
- */
 typedef struct _ParsedCommand {
 	char original_command[COMMAND_LENGTH];
 	char tokenized_command[COMMAND_LENGTH];

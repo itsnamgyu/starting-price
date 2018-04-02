@@ -1,5 +1,3 @@
-#include "parser.h"
-
 /*
  * This module is provides a clean interface to interpret commands
  * (ParsedCommand's) and run the appropriate function to execute that command.
@@ -19,9 +17,9 @@
  * interpret(Interpreter ip, ParsedCommand pc), and the appropriate function
  * will be called with the user's arguments.
  */
-
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
+#include "parser.h"
 
 typedef struct _OperationNode {
 	char operator[TOKEN_LENGTH];

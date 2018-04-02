@@ -1,10 +1,10 @@
+#define BLOCK_SIZE 1048576
+#define MAX_DUMP_LENGTH 1000000
+
 #ifndef MEMORY_H
 #define MEMORY_H
 
 #include <stdio.h>
-
-#define BLOCK_SIZE 1048576
-#define MAX_DUMP_LENGTH 1000000
 
 typedef struct _Block {
 	unsigned char data[BLOCK_SIZE];

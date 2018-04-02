@@ -1,9 +1,9 @@
+#ifndef HISTORY_H
+#define HISTORY_H
 #include "main.h"
 
 #include <stdio.h>
 
-#ifndef HISTORY_H
-#define HISTORY_H
 typedef struct _HistoryNode {
 	struct _HistoryNode *next;
 	char string[COMMAND_LENGTH];

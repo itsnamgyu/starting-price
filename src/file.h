@@ -1,7 +1,7 @@
-#include <stdio.h>
-
 #ifndef FILE_H
 #define FILE_H
+#include <stdio.h>
+
 void fprint_dir(FILE *out);
 /*	Description
  *	Print the current directory to output stream
