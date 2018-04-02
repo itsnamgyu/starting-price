@@ -7,7 +7,7 @@ ifndef MAINC
 MAINC = main.c
 endif
 
-SRCS = file.c hashtable.c help.c history.c memory.c parse.c $(MAINC)
+SRCS = file.c hashtable.c help.c history.c memory.c parser.c interpreter.c $(MAINC)
 
 OBJS = $(SRCS:.c=.o)
 
