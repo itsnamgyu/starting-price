@@ -190,10 +190,7 @@ static int dir_0(FILE *out, ParsedCommand *pc) {
 }
 
 static int dump_0(FILE *out, ParsedCommand *pc) {
-	char *string = dump_memory(G.block, -1, -1);
-	printf("%s", string);
-	free(string);
-
+	dump_memory(out, G.block, -1, -1);
 	return 1;
 }
 
@@ -204,10 +201,7 @@ static int dump_1(FILE *out, ParsedCommand *pc) {
 		return 0;
 	}
 
-	char *string = dump_memory(G.block, (int) start, -1);
-	printf("%s", string);
-	free(string);
-
+	dump_memory(out, G.block, (int) start, -1);
 	return 1;
 }
 static int dump_2(FILE *out, ParsedCommand *pc) {
@@ -223,10 +217,7 @@ static int dump_2(FILE *out, ParsedCommand *pc) {
 		return 0;
 	}
 
-	char *string = dump_memory(G.block, (int) start, (int) end);
-	printf("%s", string);
-	free(string);
-
+	dump_memory(out, G.block, (int) start, (int) end);
 	return 1;
 }
 
