@@ -1,3 +1,6 @@
+#ifndef MEMORY_H
+#define MEMORY_H
+
 #define BLOCK_SIZE 1048576
 #define MAX_DUMP_LENGTH 1000000
 
@@ -49,3 +52,4 @@ void reset_memory(Block *block);
 /*	Description
  *  Fill the memory block with 0s.
  */
+#endif

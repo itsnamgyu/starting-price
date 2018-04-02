@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+#ifndef HISTORY_H
+#define HISTORY_H
 typedef struct _HistoryNode {
 	struct _HistoryNode *next;
 	char string[COMMAND_LENGTH];
@@ -44,3 +46,4 @@ int has_history(History *history);
 /*	Description
  *  Return whether there are any commands in the history record.
  */
+#endif

@@ -3,6 +3,8 @@
 #define HASH_TABLE_SIZE 20
 #define HASH_KEY_LENGTH 100
 
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
 typedef struct _Value {
 	unsigned char opcode;
 } Value;
@@ -58,3 +60,4 @@ void fprint_hash_table(FILE *out, HashTable *table);
 /*	Description
  *  Prints the hash-table to a human-readable form to an output stream
  */
+#endif
