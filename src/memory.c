@@ -20,60 +20,28 @@ int main(void) {
 		set_memory(block, i, i % 256);
 
 	printf("Dump Test\n");
-	for (int i = 0; i < 5; ++i) {
-		char *dump_string = dump_memory(block, -1, -1);
-		printf("%s", dump_string);
-		free(dump_string);
-	}
+	for (int i = 0; i < 2; ++i)
+		dump_memory(stdout, block, -1, -1);
 
 	printf("\nDump Range & Offset Test\n");
-	{
-		char *dump_string = dump_memory(block, 23, 48);
-		printf("%s", dump_string);
-		free(dump_string);
-	}
-
-	for (int i = 0; i < 5; ++i) {
-		char *dump_string = dump_memory(block, -1, -1);
-		printf("%s", dump_string);
-		free(dump_string);
-	}
+	dump_memory(stdout, block, 23, 48);
+	for (int i = 0; i < 2; ++i)
+		dump_memory(stdout, block, -1, -1);
 
 	printf("\nOverflow Test\n");
-	{
-		char *dump_string = dump_memory(block, BLOCK_SIZE - 4, -1);
-		printf("%s", dump_string);
-		free(dump_string);
-	}
-
-	for (int i = 0; i < 5; ++i) {
-		char *dump_string = dump_memory(block, -1, -1);
-		printf("%s", dump_string);
-		free(dump_string);
-	}
+	dump_memory(stdout, block, BLOCK_SIZE - 4, -1);
+	for (int i = 0; i < 2; ++i)
+		dump_memory(stdout, block, -1, -1);
 
 	printf("\nRange & Overflow Test\n");
-	{
-		char *dump_string = dump_memory(block, 0xFFFD7, 0xFFFE0);
-		printf("%s", dump_string);
-		free(dump_string);
-	}
-
-	for (int i = 0; i < 5; ++i) {
-		char *dump_string = dump_memory(block, -1, -1);
-		printf("%s", dump_string);
-		free(dump_string);
-	}
+	dump_memory(stdout, block, 0xFFFD7, 0xFFFE0);
+	for (int i = 0; i < 2; ++i)
+		dump_memory(stdout, block, -1, -1);
 
 	printf("\nReset Test\n");
-
 	reset_memory(block);
-
-	for (int i = 0; i < 4; ++i) {
-		char *dump_string = dump_memory(block, -1, -1);
-		printf("%s", dump_string);
-		free(dump_string);
-	}
+	for (int i = 0; i < 2; ++i)
+		dump_memory(stdout, block, -1, -1);
 
 	free(block);
 
@@ -105,62 +73,43 @@ void fill_memory(Block *block, int start, int end, unsigned char value) {
 		block->data[i] = value;
 }
 
-static inline int sprintf_digit(char *string, int i) {
-	char *base = string;
-
+static inline void fprint_digit(FILE *out, int i) {
 	int digit_34 = i / 16 % 256;
 	int digit_12 = i / 4096; assert(digit_12 < 256);
-	string += sprintf(string, "%02X%02X0 ", digit_12, digit_34);
-
-	int offset = string - base;
-	return offset;
+	fprintf(out, "%02X%02X0 ", digit_12, digit_34);
 }
 
-static inline int sprintf_data_hex(
-		char *string, Block *block, int start, int end, int base_index)
-{
-	char *base = string;
-
+static inline void fprint_data_hex(FILE *out, Block *block, 
+		                          int start, int end, int base_index) {
 	for (int i = 0; i < 16; ++i) {
 		int index = base_index + i;
 		int value = block->data[index];
 
 		if (start <= index && index <= end)
-			string += sprintf(string, "%02X ", value);
+			fprintf(out, "%02X ", value);
 		else
-			string += sprintf(string, "   ");
+			fprintf(out, "   ");
 	}
-
-	int offset = string - base;
-	return offset;
 }
 
-static inline int sprintf_data_char(
-		char *string, Block *block, int start, int end, int base_index)
-{
+static inline void fprint_data_char(FILE *out, Block *block,
+                                   int start, int end, int base_index) {
 	const int X20 = 32;
 	const int X7E = 126;
-	char *base = string;
 
 	for (int i = 0; i < 16; ++i) {
 		int index = base_index + i;
 		int value = block->data[index];
 
 		if (index < start || end < index || value < X20 || X7E < value)
-			string += sprintf(string, ".");
+			fprintf(out, ".");
 		else
-			string += sprintf(string, "%c", value);
+			fprintf(out, "%c", value);
 	}
-
-	int offset = string - base;
-	return offset;
 }
 
 // Make sure to free after use!
-char *dump_memory(Block *block, int start, int end) {
-	char *string = malloc(sizeof(char) * MAX_DUMP_LENGTH);
-	char *full_string = string;
-
+void dump_memory(FILE *out, Block *block, int start, int end) {
 	if (start == -1) start = block->current; else assert(start >= 0);
 	if (end == -1) end = start + 159;
 	if (end >= BLOCK_SIZE) end = BLOCK_SIZE - 1;
@@ -169,18 +118,15 @@ char *dump_memory(Block *block, int start, int end) {
 	if (block->current == BLOCK_SIZE) block->current = 0;
 	
 	for (int i = start / 16 * 16; i < end / 16 * 16 + 16; i += 16) {
-		string += sprintf_digit(string, i);
-		string += sprintf_data_hex(string, block, start, end, i);
-		string += sprintf(string, "; ");
-		string += sprintf_data_char(string, block, start, end, i);
-		string += sprintf(string, "\n");
+		fprint_digit(out, i);
+		fprint_data_hex(out, block, start, end, i);
+		fprintf(out, "; ");
+		fprint_data_char(out, block, start, end, i);
+		fprintf(out, "\n");
 	}
-
-	return full_string;
 }
 
 void reset_memory(Block *block) {
-	for (int i = 0; i < BLOCK_SIZE; ++i)
-		block->data[i] = 0;
+	for (int i = 0; i < BLOCK_SIZE; ++i) block->data[i] = 0;
 	block->current = 0;
 }

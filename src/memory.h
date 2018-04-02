@@ -1,6 +1,8 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
+#include <stdio.h>
+
 #define BLOCK_SIZE 1048576
 #define MAX_DUMP_LENGTH 1000000
 
@@ -39,10 +41,10 @@ void fill_memory(Block *block, int start, int end, unsigned char value);
  *  Fill the memory block with a given value from start to end (inclusive).
  */
 
-char *dump_memory(Block *block, int start, int end);
+void dump_memory(FILE *out, Block *block, int start, int end);
 /*	Description
  *  Print the values within the block from start to end (inclusive) in a
- *  dump format.
+ *  dump format to output stream.
  *
  *  Return
  *  A dynamically allocated string (make sure to free it)
