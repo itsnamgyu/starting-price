@@ -7,9 +7,9 @@
 
 /* Note these declarations
 typedef struct _OperationNode {
-	char operator[OPERATION_LENGTH];
+	char operator[TOKEN_LENGTH];
 	int argument_count;
-	void *function;
+	int (*function)(FILE*, ParsedCommand*);
 	struct _OperationNode *link;
 } OperationNode;
 
