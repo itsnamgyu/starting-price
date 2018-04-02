@@ -11,7 +11,7 @@
  * operation.
  *
  * IMPORTANT: The signature of the function must be
- * int f(FILE *out, char *arg0, ..., char *argN);
+ * int f(FILE *out, ProcessedCommand *pc);
  * * This will not be explicitly checked during complication nor run-time.
  *
  * Once you've set up the Interpreter, you can let the Interpreter interpret 
@@ -20,10 +20,13 @@
  * will be called with the user's arguments.
  */
 
+#ifndef INTERPRETER_H
+#define INTERPRETER_H
+
 typedef struct _OperationNode {
 	char operator[TOKEN_LENGTH];
 	int argument_count;
-	void *function;
+	int (*function)(FILE*, ParsedCommand*);
 	struct _OperationNode *link;
 } OperationNode;
 /*
@@ -48,3 +51,4 @@ void add_operation(Interpreter *ip, char *operator,
 int interpret(Interpreter *ip, ParsedCommand *pc);
 
 int interpret_and_free(Interpreter *ip, ParsedCommand *pc);
+#endif

@@ -23,15 +23,15 @@ typedef struct _Interpreter {
 #ifdef TEST
 #undef TEST
 #include "parser.c"
-int f1(FILE *out) {
+int f1(FILE *out, ParsedCommand *pc) {
 	return 1;
 }
 
-int f2(FILE *out, char *s1) {
+int f2(FILE *out, ParsedCommand *pc) {
 	return 2;
 }
 
-int f3(FILE *out, char *s1, char *s2) {
+int f3(FILE *out, ParsedCommand *pc) {
 	return 3;
 }
 
@@ -101,28 +101,13 @@ int interpret(Interpreter *ip, ParsedCommand *pc) {
 	assert (ip->head->link && "empty interpreter?");
 
 	FILE *out = ip->output_stream;
-	char **args = pc->arguments;
 
 	for (OperationNode *node = ip->head->link; node; node = node->link) {
 		int match = 1;
 		match = match && !strcmp(node->operator, pc->operator);
 		match = match && (node->argument_count == pc->argument_count);
 		
-		if (match) {
-			// Cast and call the function passing the appropriate arguments
-			void *f = node->function;
-			switch (node->argument_count) {
-				case 0:
-					return ((int (*)(FILE*)) f)(out);
-				case 1:
-				 	return ((int (*)(FILE*, char*)) f)(out, args[0]);
-				case 2:
-					return ((int(*)(FILE*, char*, char*)) f)(out, args[0], args[1]);
-				case 3:
-					return ((int (*)(FILE*, char*, char*, char*)) f)(
-							out, args[0], args[1], args[2]);
-			}
-		}
+		if (match) return node->function(out, pc);
 	}
 	
 	// Print error if there were no commands found
