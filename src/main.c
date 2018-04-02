@@ -204,6 +204,7 @@ static int dump_1(FILE *out, ParsedCommand *pc) {
 	dump_memory(out, G.block, (int) start, -1);
 	return 1;
 }
+
 static int dump_2(FILE *out, ParsedCommand *pc) {
 	unsigned int start;
 	if (!hex_to_uint(pc->arguments[0], &start) || start >= BLOCK_SIZE) {
