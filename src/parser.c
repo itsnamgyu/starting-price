@@ -17,6 +17,7 @@
 #define TOKEN_LENGTH 40
 
 typedef struct _ParsedCommand {
+	char original_command[COMMAND_LENGTH];
 	char tokenized_command[COMMAND_LENGTH];
 	char *operator;
 	char *arguments[ARGUMENT_COUNT];
@@ -85,6 +86,7 @@ int main(void) {
 
 ParsedCommand *parse_command(char *command, int *error_code) {
 	ParsedCommand *pc = malloc(sizeof(ParsedCommand));
+	strcpy(pc->original_command, command);
 	strcpy(pc->tokenized_command, command);
 
 	if (!validate_and_remove_commas(pc->tokenized_command)) {

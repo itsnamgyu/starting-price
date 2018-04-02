@@ -1,5 +1,8 @@
 #include "main.h"
 
+#ifndef PARSER_H
+#define PARSER_H
+
 #define INVALID_FORMAT_ERROR 1
 #define TOO_MANY_ARGUMENTS_ERROR 2
 #define COMMAND_TOO_LONG_ERROR 3
@@ -18,10 +21,8 @@
  * 
  * Note that TOKEN_COUNT is the maximum number of arguments + 1
  */
-
-#ifndef PARSER_H
-#define PARSER_H
 typedef struct _ParsedCommand {
+	char original_command[COMMAND_LENGTH];
 	char tokenized_command[COMMAND_LENGTH];
 	char *operator;
 	char *arguments[ARGUMENT_COUNT];
