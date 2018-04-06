@@ -28,5 +28,5 @@ int find_from_dict(Dict *dict, char *key, void **value);
 
 void fprint_dict(FILE *out, Dict *dict, void (*print_value) (FILE *out, void *value));
 
-void ignore_dict_value(void *value);
+void ignore_dict_values(void *value);
 #endif

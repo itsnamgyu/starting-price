@@ -38,7 +38,7 @@ int main(void) {
 	assert(find_from_dict(dict, "bye", (void*) &string));
 	assert(!strcmp("Cya", string));
 
-	free_dict(dict, ignore_dict_value);
+	free_dict(dict, ignore_dict_values);
 
 	printf("----------------------------------------\n");
 	printf("Automatic tests successful!\n");
@@ -54,7 +54,7 @@ int main(void) {
 		printf("Print function\n");
 		fprint_dict(stdout, dict, print_string);
 
-		free_dict(dict, ignore_dict_value);
+		free_dict(dict, ignore_dict_values);
 	}
 
 	return 0;
@@ -140,6 +140,6 @@ void fprint_dict(FILE *out, Dict *dict, void (*print_value) (FILE *out, void *va
 	}
 }
 
-void ignore_dict_value(void *value) {
+void ignore_dict_values(void *value) {
 	(void) value; // suppress unused warning
 }
