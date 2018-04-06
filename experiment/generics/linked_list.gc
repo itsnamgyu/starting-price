@@ -1,0 +1,50 @@
+#ifndef Type
+#error "You must define Type to generate a linked_list code"
+#endif
+
+#ifndef type
+#error "You must define type to generate a linked_list code"
+#endif
+
+#ifndef ValueType
+#error "You must define ValueType to generate a linked_list code"
+#endif
+
+#ifndef free_value_function
+#error "You must define free_value_function of type void (*) (ValueType *value) to generate linked_list code"
+#endif
+
+#include <stdlib.h>
+
+#define SOURCE_TEMPLATE(Type, type, free_value_function) \
+void free_##type##_list(Type##List *list) {\
+	Type##Node *next;\
+	for (Type##Node *node = list->head; node; node = next) {\
+		next = node->link;\
+		if (node != list->head)\
+			free_value_function(node->value);\
+		free(node);\
+	}\
+	free(list);\
+}\
+Type##List *new_##type##_list() {\
+	Type##List *list = malloc(sizeof(Type##List));\
+	list->head = malloc(sizeof(Type##Node));\
+	list->head->link = NULL;\
+	list->last = list->head;\
+	return list;\
+}\
+void add_##type##_to(Type##List *list, ValueType *value) {\
+	Type##Node *new_node = malloc(sizeof(Type##Node));\
+	new_node->value = value;\
+	new_node->link= NULL;\
+	list->last->link = new_node;\
+	list->last= new_node;\
+}\
+
+
+#define GENERATE_SOURCE(Type, type, free_value_function) \
+SOURCE_TEMPLATE(Type, type, free_value_function)\
+
+
+GENERATE_SOURCE(Type, type, free_value_function)

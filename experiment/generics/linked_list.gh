@@ -1,0 +1,35 @@
+#ifndef Type
+#error "You must define Type to generate a linked_list header"
+#endif
+
+#ifndef type
+#error "You must define type to generate a linked_list header"
+#endif
+
+#ifndef ValueType
+#error "You must define ValueType to generate a linked_list header"
+#endif
+
+#define HEADER_TEMPLATE(Type, type, ValueType) \
+typedef struct _##Type##Node {\
+	struct _##Type##Node *link;\
+	ValueType *value;\
+} Type##Node;\
+\
+typedef struct _##Type##List {\
+	Type##Node *head;\
+	Type##Node *last;\
+} Type##List;\
+\
+Type##List *new_##type##_list();\
+\
+void free_##type##_list(Type##List *list);\
+\
+void add_##type##_to(Type##List *list, ValueType *value);\
+
+
+#define GENERATE_HEADER(Type, type, ValueType) \
+HEADER_TEMPLATE(Type, type, ValueType)
+
+
+GENERATE_HEADER(Type, type, ValueType)
