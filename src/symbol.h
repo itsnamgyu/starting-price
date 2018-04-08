@@ -12,6 +12,7 @@ typedef struct _Symbol {
 } Symbol;
 
 typedef Dict SymbolDict;
+typedef SymbolDict SymbolTable;
 
 SymbolDict *new_symbol_dict();
 
@@ -24,4 +25,8 @@ int find_symbol_address(SymbolDict *dict, char *string, unsigned int *address);
 void free_symbol_dict(SymbolDict *dict);
 
 void fprint_symbols(FILE *out, SymbolDict *dict);
+
+#define new_symbol_table new_symbol_dict
+#define add_to_symbol_table add_to_symbol_dict
+#define free_symbol_table free_symbol_dict
 #endif
