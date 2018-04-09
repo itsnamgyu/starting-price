@@ -42,7 +42,6 @@ void fprint_dir(FILE *out) {
 		else if (buffer.st_mode & S_IXUSR) fprintf(out, "*");
 		fprintf(out, "\t");
 	}
-
 	fprintf(out, "\n");
 }
 
@@ -61,7 +60,6 @@ int fprint_file(FILE *out, char *filename) {
 	char c;
 	while ((c = fgetc(file)) != EOF)
 		fprintf(out, "%c", c);
-	fprintf(out, "\n");
 
 	return 1;
 }

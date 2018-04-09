@@ -122,6 +122,6 @@ void fprint_symbols(FILE *out, SymbolDict *dict) {
 	
 	for (int i = 0; i < count; ++i) {
 		SymbolPair pair = pairs[i];
-		fprintf(out, "\t%s\t%4X\n", pair.string, pair.address);
+		fprintf(out, "\t%s\t%04X\n", pair.string, pair.address);
 	}
 }
