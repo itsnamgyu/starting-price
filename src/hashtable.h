@@ -1,27 +1,14 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
+#include "generic_dict.h"
+
 #include <stdio.h>
 
-#define HASH_TABLE_SIZE 20
-#define HASH_KEY_LENGTH 100
-typedef struct _Value {
-	unsigned char opcode;
-} Value;
+typedef struct _Opcode {
+	unsigned char raw;
+} Opcode;
 
-typedef struct _BucketNode {
-	char key[HASH_KEY_LENGTH];
-	Value value;
-	struct _BucketNode *next;
-} BucketNode;
-
-typedef struct _TableNode {
-	BucketNode *head; // fake
-	BucketNode *last;
-} TableNode;
-
-typedef struct _HashTable {
-	TableNode nodes[HASH_TABLE_SIZE];
-} HashTable;
+#define HashTable Dict
 
 HashTable *new_hash_table();
 /*	Description
@@ -33,7 +20,7 @@ void free_hash_table(HashTable *table);
  *  Free memory and destory HashTable.
  */
 
-void add_to_hash_table(HashTable *table, char *key, Value value);
+void add_to_hash_table(HashTable *table, char *key, unsigned char opcode);
 /*	Description
  *  Add a key-value entry to HashTable.
  *
@@ -43,7 +30,7 @@ void add_to_hash_table(HashTable *table, char *key, Value value);
  *  on, change the definition of struct Value
  */
 
-int find_from_hash_table(HashTable *table, char *key, Value *value);
+int find_from_hash_table(HashTable *table, char *key, unsigned char *opcode);
 /*	Description
  *  Find the value associated with key from table
  *

@@ -16,9 +16,7 @@ typedef SymbolDict SymbolTable;
 
 SymbolDict *new_symbol_dict();
 
-void add_to_symbol_dict(SymbolDict *dict, char *string);
-
-int set_symbol_address(SymbolDict *dict, char *string, unsigned int address);
+void add_to_symbol_dict(SymbolDict *dict, char *string, unsigned int address);
 
 int find_symbol_address(SymbolDict *dict, char *string, unsigned int *address);
 

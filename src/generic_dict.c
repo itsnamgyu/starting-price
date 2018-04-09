@@ -149,7 +149,9 @@ void fprint_dict(FILE *out, Dict *dict, void (*print_value) (FILE *out, void *va
 		fprintf(out, "%d : ", i);
 		
 		for (BucketNode *node = dict->nodes[i].head->link; node; node = node->link) {
+			fprintf(out, "[%s,", node->key);
 			print_value(out, node->value);
+			fprintf(out, "]");
 			if (node->link) fprintf(out, " -> ");
 		}
 

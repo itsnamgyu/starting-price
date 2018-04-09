@@ -7,6 +7,7 @@
 #include "parser.h"
 #include "interpreter.h"
 #include "global.h"
+#include "assemble.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +15,7 @@
 #include <assert.h>
 
 #define OPCODE_FILE "opcode.txt"
+#define RESERVED_FILE "reserved.txt"
 #define PROMPT "sicsim> "
 
 static inline int hex_to_uint(char *string, unsigned int *value);
@@ -24,6 +26,8 @@ static inline int get_line(char *string);
 
 static void load_hash_table(HashTable *table, FILE *in);
 // Load HashTable for the given opcode input file and save to table.
+
+static void load_reserved_dict(ReservedDict *dict, FILE *in);
 
 static int quit_0(FILE *out, ParsedCommand *pc);
 
@@ -51,19 +55,29 @@ static int opcode_1(FILE *out, ParsedCommand *pc);
 
 static int type_1(FILE *out, ParsedCommand *pc);
 
-struct _Global G;
+Global G;
 
 int main(void) {
 	G.history = new_history();
 	G.table = new_hash_table();
 	G.block = new_memory_block();
+	G.reserved = new_reserved_dict();
 
 	FILE *opcode_in;
 	if (!(opcode_in = fopen(OPCODE_FILE, "r")))
-		printf("error opening opcode.txt. Continuing without opcodes\n");
+		printf("error opening %s. continuing without opcodes\n", OPCODE_FILE);
 	else {
 		load_hash_table(G.table, opcode_in);
 		fclose(opcode_in);
+	}
+
+	FILE *reserved_in;
+	if (!(reserved_in = fopen(RESERVED_FILE, "r")))
+		printf("error opening %s. continuing without reserved tokens\n",
+				RESERVED_FILE);
+	else {
+		load_reserved_dict(G.reserved, reserved_in);
+		fclose(reserved_in);
 	}
 
 	Interpreter *ip = new_interpreter(stdout);
@@ -89,6 +103,8 @@ int main(void) {
 	add_operation(ip, "opcodelist", 0, opcodelist_0);
 	add_operation(ip, "opcode", 1, opcode_1);
 	add_operation(ip, "type", 1, type_1);
+	add_operation(ip, "assemble", 1, assemble_1);
+	add_operation(ip, "symbol", 0, symbol_0);
 
 	char command[COMMAND_LENGTH];
 	ParsedCommand *pc;
@@ -159,9 +175,15 @@ static void load_hash_table(HashTable *table, FILE *in) {
 	char operand_count[100];
 	while (fscanf(in, "%02X %s %s", &opcode, mnemonic, operand_count) == 3) {
 		assert(opcode < 256);
-		Value value;
-		value.opcode = opcode;
-		add_to_hash_table(table, mnemonic, value);
+		add_to_hash_table(table, mnemonic, opcode);
+	}
+}
+
+static void load_reserved_dict(ReservedDict *dict, FILE *in) {
+	char string[100];
+	int type;
+	while (fscanf(in, "%s %d", string, &type) == 2) {
+		add_to_reserved_dict(dict, string, (ReservedType) type);
 	}
 }
 
@@ -270,13 +292,13 @@ static int reset_0(FILE *out, ParsedCommand *pc) {
 }
 
 static int opcode_1(FILE *out, ParsedCommand *pc) {
-	Value value;
-	if (!find_from_hash_table(G.table, pc->arguments[0], &value)) {
+	unsigned char opcode;
+	if (!find_from_hash_table(G.table, pc->arguments[0], &opcode)) {
 		fprintf(out, "Couldn't find opcode for %s\n", pc->arguments[0]);
 		return 0;
 	}
 
-	printf("opcode is %02X\n", value.opcode);
+	printf("opcode is %02X\n", opcode);
 	return 1;
 }
 

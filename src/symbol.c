@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 /* Recall these definitions
 #define BASE_SIZE 10
@@ -27,11 +28,8 @@ int main(void) {
 	{
 		SymbolDict *dict = new_symbol_dict();
 
-		add_to_symbol_dict(dict, "Hello");
-		add_to_symbol_dict(dict, "Yo");
-
-		assert(set_symbol_address(dict, "Hello", 1023));
-		assert(set_symbol_address(dict, "Yo", 2039));
+		add_to_symbol_dict(dict, "Hello", 1023);
+		add_to_symbol_dict(dict, "Yo", 2039);
 
 		unsigned int address;
 
@@ -50,19 +48,11 @@ int main(void) {
 	{
 		SymbolDict *dict = new_symbol_dict();
 
-		add_to_symbol_dict(dict, "Hello");
-		add_to_symbol_dict(dict, "Yo");
-		add_to_symbol_dict(dict, "Yolo");
-		add_to_symbol_dict(dict, "Abs");
-		add_to_symbol_dict(dict, "Hoho");
-
-		fprint_symbols(stdout, dict);
-
-		assert(set_symbol_address(dict, "Hello", 512));
-		assert(set_symbol_address(dict, "Yo", 1024));
-		assert(set_symbol_address(dict, "Yolo", 2048));
-		assert(set_symbol_address(dict, "Abs", 1536));
-		assert(set_symbol_address(dict, "Hoho", 256));
+		add_to_symbol_dict(dict, "Hello", 512);
+		add_to_symbol_dict(dict, "Yo", 1024);
+		add_to_symbol_dict(dict, "Yolo", 2048);
+		add_to_symbol_dict(dict, "Abs", 1536);
+		add_to_symbol_dict(dict, "Hoho", 256);
 
 		fprint_symbols(stdout, dict);
 
@@ -79,19 +69,10 @@ SymbolDict *new_symbol_dict() {
 	return new_dict(SYMBOL_DICT_SIZE);
 }
 
-void add_to_symbol_dict(SymbolDict *dict, char *string) {
+void add_to_symbol_dict(SymbolDict *dict, char *string, unsigned int address) {
 	Symbol *symbol = malloc(sizeof(Symbol));
-	symbol->address = 0;
+	symbol->address = address;
 	add_to_dict(dict, string, symbol);
-}
-
-int set_symbol_address(SymbolDict *dict, char *string, unsigned int address) {
-	Symbol *symbol;
-	if (find_from_dict(dict, string, (void**) &symbol)) {
-		symbol->address = address;
-		return 1;
-	} else
-		return 0;
 }
 
 int find_symbol_address(SymbolDict *dict, char *string, unsigned int *address) {
