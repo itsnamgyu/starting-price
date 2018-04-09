@@ -34,6 +34,7 @@ int assemble_1(FILE *out, ParsedCommand *pc) {
 
 	tu = translate(out, in, G.table, G.reserved);
 	fclose(in);
+	if (!tu) return 0;
 
 	char lst[1000];
 	char obj[1000];

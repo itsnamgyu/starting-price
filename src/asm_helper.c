@@ -644,6 +644,7 @@ static int sscan_label_and_reserved(
 
 	// else -> save the label
 	if (strlen(first_word) >= SIC_LABEL_LENGTH) return 0;
+
 	strcpy(statement->label, first_word);
 	free(first_word);
 
@@ -659,7 +660,7 @@ static int sscan_label_and_reserved(
 }
 
 static SicStatement *add_statement(SicStatementList *list) {
-	SicStatement *statement = malloc(sizeof(SicStatement));
+	SicStatement *statement = calloc(sizeof(SicStatement), 1);
 	statement->reserved_string = NULL;
 	statement->operands.bytes = NULL;
 	statement->p = 0;
