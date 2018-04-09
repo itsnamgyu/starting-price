@@ -71,7 +71,10 @@ static void free_statement(void *s_void) {
 	SicStatement *s = (SicStatement*) s_void;
 
 	if (s->reserved_string) free(s->reserved_string);
-	if (s->type == BYTE && s->operands.bytes) free(s->operands.bytes);
+	if (s->type == BYTE && !s->operands.is_b && s->operands.bytes)
+		free(s->operands.bytes);
+	if (s->type == BYTE && s->operands.is_b && s->operands.ubytes)
+		free(s->operands.ubytes);
 	free(s);
 }
 
