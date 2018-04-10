@@ -1,3 +1,10 @@
+/*
+ * history.h
+ *
+ * This module provides a functions related to storing and priting the
+ * users command history. Basically, this is for the hi[story] command.
+ */
+
 #ifndef HISTORY_H
 #define HISTORY_H
 #include "main.h"
