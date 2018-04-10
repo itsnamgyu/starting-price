@@ -306,7 +306,11 @@ int assign_addresses(FILE *out, TranslationUnit *tu) {
 			case NOBASE:
 				s->instruction_size = 0; break;
 			case BYTE:
-				s->instruction_size = strlen(s->operands.bytes); break;
+				if (s->operands.is_b)
+					s->instruction_size = s->operands.ulength;
+				else
+					s->instruction_size = strlen(s->operands.bytes);
+				break;
 			case WORD:
 				s->instruction_size = 3; break;
 			case RBYTE:
