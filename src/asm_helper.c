@@ -440,15 +440,15 @@ static inline int isupperxdigit(char c) {
 	return toupper(c) == c && isxdigit(c);
 }
 
-static int read_bytes(char *word, SicStatement *statement) {
+static int sscan_bytes(char **cursor, SicStatement *statement) {
 	int is_bytes; // or chars
-	switch (*(word++)) {
+	skip_whitespaces(cursor);
+	switch (*((*cursor)++)) {
 		case 'X': is_bytes = 1; break;
 		case 'C': is_bytes = 0; break;
 		default: return 0;
 	}
-	if (*(word++) != '\'') return 0;
-
+	if (*((*cursor)++) != '\'') return 0;
 
 	char bytes[SIC_MAX_BYTE_LENGTH] = { 0 };
 	unsigned char ubytes[SIC_MAX_BYTE_LENGTH] = { 0 };
@@ -456,29 +456,36 @@ static int read_bytes(char *word, SicStatement *statement) {
 	statement->operands.is_b = is_bytes;
 	if (is_bytes) {
 		int odd = 1;
-		while (isupperxdigit(*word)) {
-			if (index == SIC_MAX_BYTE_LENGTH - 1) return 0;
-			int n; sscanf(word++, "%1X", &n);
-			
-			if (odd) ubytes[index] += 16 * n;
-			else ubytes[index++] += n;
+		while (**cursor != '\'') {
+			if (!**cursor) return 0;
+			if (isupperxdigit(**cursor)) {
+				if (index == SIC_MAX_BYTE_LENGTH - 1) return 0;
+				int n; sscanf((*cursor)++, "%1X", &n);
 
-			odd = !odd;
+				if (odd) ubytes[index] += 16 * n;
+				else ubytes[index++] += n;
+
+				odd = !odd;
+			} else {
+				return 0;
+			}
 		}
 		// if odd == TRUE, the number of hexes is even
 		if (!odd) index++;
 		statement->operands.is_odd_b = !odd;
 	} else {
-		while (*word != '\'') {
-			if (!*word) return 0;
+		while (**cursor != '\'') {
+			if (!**cursor) return 0;
 			if (index == SIC_MAX_BYTE_LENGTH - 1) return 0;
-			bytes[index++] = *(word++);
+			bytes[index++] = *((*cursor)++);
 		}
 		bytes[index] = '\0';
 	}
 
-	if (*(word++) != '\'') return 0;
-	if (*word != '\0') return 0;
+	if (*((*cursor)++) != '\'') return 0;
+	skip_whitespaces(cursor);
+	if (**cursor != '\0') return 0;
+
 
 	if (is_bytes) {
 		statement->operands.ubytes = malloc(sizeof(unsigned char));
@@ -542,12 +549,8 @@ static int sscan_operand(char **asm_line_cursor, SicStatement *statement) {
 		case BLANK_OPERATION: break;
 
 		case BYTE:
-			first_word = sscan_word(asm_line_cursor, SSCAN_WORD_NO_COMMA);
-			if (!first_word) return 0;
-			if (!read_bytes(first_word, statement)) {
-				free(first_word); return 0;
-			}
-			free(first_word);
+			if (!sscan_bytes(asm_line_cursor, statement))
+				return 0;
 			break;
 
 		case WORD:
