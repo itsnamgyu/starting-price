@@ -1,9 +1,17 @@
+/*
+ * asm_helper.h
+ *
+ * This module helps assemble.h with the extrenuous assembly process of asm
+ * files. Why? Because there are just too many functions and too much code.
+ */
+
 #ifndef ASM_HELPER_H
 #define ASM_HELPER_H
 #include "reserved.h"
 #include "symbol.h"
 #include "hashtable.h"
 #include "generic_list.h"
+#include "register.h"
 
 #include <stdio.h>
 
@@ -14,11 +22,6 @@
 typedef enum _AddressingMode {
 	IMMEDIATE, INDIRECT, SIMPLE,
 } AddressingMode;
-
-typedef enum _Register {
-	A = 0, X = 1, L = 2, B = 3, 
-	S = 4, T = 5, PC = 8, SW = 9,
-} Register;
 
 typedef struct _SicStatement {
 	unsigned int address;
