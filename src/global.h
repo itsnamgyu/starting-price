@@ -3,6 +3,12 @@
 #include "memory.h"
 #include "reserved.h"
 
+/*
+ * global.h
+ *
+ * A horrible module that makes global variables just slightly more safe!
+ */
+
 typedef struct _Global {
 	History *history;
 	HashTable *table;
