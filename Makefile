@@ -39,8 +39,8 @@ assignment2:
 	echo 'TARGET = 20161662.out' | cat - .t/Makefile > .temp
 	mv .temp .t/Makefile
 	mv .t $(ASSIGNMENT)2
-	#tar -cvf $(ASSIGNMENT2).tar $(ASSIGNMENT2)
-	#rm -r $(ASSIGNMENT2)
+	tar -cvf $(ASSIGNMENT)2.tar $(ASSIGNMENT)2
+	rm -r $(ASSIGNMENT)2
 	
 .DEFAULT :
 	cd src && $(MAKE) $@
