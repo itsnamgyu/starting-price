@@ -1,3 +1,10 @@
+/*
+ * file.h
+ *
+ * A module for printing the current directory and printing the
+ * contents of files.
+ */
+
 #ifndef FILE_H
 #define FILE_H
 #include <stdio.h>
