@@ -115,6 +115,10 @@ int main(void) {
 			continue;
 		}
 
+		if (!*command) {
+			continue;
+		}
+
 		int error_code;
 		if (!(pc = parse_command(command, &error_code))) {
 			switch (error_code) {
