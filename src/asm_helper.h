@@ -3,6 +3,7 @@
  *
  * This module helps assemble.h with the extrenuous assembly process of asm
  * files. Why? Because there are just too many functions and too much code.
+ *
  */
 
 #ifndef ASM_HELPER_H
@@ -54,12 +55,12 @@ typedef struct _SicStatement {
 			Register r2;
 		};
 		struct { // byte
-			char is_b;
-			char is_odd_b;
-			int ulength;
+			char is_b; // TRUE: X'0E1', FALSE: C'HELLO'
+			char is_odd_b; // TRUE: X'203', FALSE: X'2034'
+			int ulength; // The number of hexes in X'*'
 			union {
-				char *bytes;
-				unsigned char *ubytes;
+				char *bytes; // The string within C'*'
+				unsigned char *ubytes; // The array of bytes within X'*'
 			};
 		};
 		struct { // word
