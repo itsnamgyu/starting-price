@@ -681,7 +681,7 @@ static void strcat_byte(char *string, SicStatement *statement, int all_hex) {
 	if (statement->operands.is_b) {
 		char hex[3];
 		for (int i = 0; i < statement->operands.ulength; ++i) {
-			if (statement->operands.is_odd_b &&
+			if (!all_hex && statement->operands.is_odd_b &&
 					i == statement->operands.ulength - 1) {
 				sprintf(hex, "%1X", statement->operands.ubytes[i] / 16);
 			} else {
