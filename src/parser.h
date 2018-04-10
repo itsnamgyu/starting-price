@@ -1,4 +1,11 @@
 /*
+ * parser.h
+ *
+ * This modules provides the definition of struct _ParsedCommand which
+ * stores invidiual tokens (command + arguments) of a user's command.
+ * It also provides the parse_command function that automatically
+ * parses a user command string and generates a ParsedCommand struct.
+ *
  * Terminology
  * command: the original one-line string inputted by user
  * token: each word within command
@@ -29,6 +36,16 @@ typedef struct _ParsedCommand {
 } ParsedCommand;
 
 ParsedCommand *parse_command(char *command, int *error_code);
+/*
+ * Generate and return ParsedCommand from a user input string (*command*).
+ *
+ * On parse fail, save error code in *error_code* and return NULL.
+ *
+ * Note that this ParsedCommand is dynamically allocated.
+ */
 
 void free_parsed_command(ParsedCommand *parsed);
+/*
+ * Deallocate the givne ParsedCommand
+ */
 #endif 
