@@ -1,3 +1,10 @@
+/*
+ * register.h
+ *
+ * This module provides register enum definition and a convinience function
+ * to get a string represenation of a register enum.
+ */
+
 #ifndef REGISTER_H
 #define REGISTER_H
 typedef enum _Register {
