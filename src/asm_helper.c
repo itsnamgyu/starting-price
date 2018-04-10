@@ -356,20 +356,24 @@ static char *sscan_word(char **cursor, int require_comma_separator) {
 
 #define SSCAN_NO_COMMA 0
 #define SSCAN_REQUIRE_COMMA 1
+#define SSCAN_INT_NONE -1
+#define SSCAN_INT_NEGATIVE -2
 static int sscan_int(char **cursor, int require_comma_separator) {
 	int n, offset;
 
 	if (require_comma_separator) {
 		if (!skip_whitespaces_and_comma(cursor))
-			return -1;
+			return SSCAN_INT_NONE;
 	} else skip_whitespaces(cursor);
 	
 	if (sscanf(*cursor, "%d%n", &n, &offset) != 1) {
-		return -1;
+		return SSCAN_INT_NONE;
 	}
+	if (n < 0) return SSCAN_INT_NEGATIVE;
+
 	(*cursor) += offset;
 
-	if (is_whitespace_or_comma(**cursor)) return -1; // trailing chars
+	if (is_whitespace_or_comma(**cursor)) return SSCAN_INT_NONE; // trailing chars
 
 	return n;
 }
@@ -424,7 +428,8 @@ static int read_memory_operand(char *word, SicStatement *statement) {
 		// may be literal if immediate
 		literal = sscan_int(&word, SSCAN_NO_COMMA);
 
-	if (literal == -1) {
+	if (literal == SSCAN_INT_NEGATIVE) return 0;
+	if (literal == SSCAN_INT_NONE) {
 		if (strlen(word) >= SIC_LABEL_LENGTH) return 0;
 		strcpy(statement->operands.label, word);
 		statement->operands.is_literal = 0;
@@ -554,25 +559,25 @@ static int sscan_operand(char **asm_line_cursor, SicStatement *statement) {
 			break;
 
 		case WORD:
-			if ((n = sscan_int(asm_line_cursor, SSCAN_NO_COMMA)) == -1)
+			if ((n = sscan_int(asm_line_cursor, SSCAN_NO_COMMA)) < 0)
 				return 0;
 			statement->operands.word = n;
 			break;
 
 		case RBYTE:
-			if ((n = sscan_int(asm_line_cursor, SSCAN_NO_COMMA)) == -1)
+			if ((n = sscan_int(asm_line_cursor, SSCAN_NO_COMMA)) < 0)
 				return 0;
 			statement->operands.rsize = n;
 			break;
 
 		case RWORD:
-			if ((n = sscan_int(asm_line_cursor, SSCAN_NO_COMMA)) == -1)
+			if ((n = sscan_int(asm_line_cursor, SSCAN_NO_COMMA)) < 0)
 				return 0;
 			statement->operands.rsize = n * 3;
 			break;
 
 		case START:
-			if ((n = sscan_int(asm_line_cursor, SSCAN_NO_COMMA)) == -1) {
+			if ((n = sscan_int(asm_line_cursor, SSCAN_NO_COMMA)) < 0) {
 				return 0;
 			}
 			statement->operands.start_address = n;
@@ -961,6 +966,21 @@ void fprint_end_record(FILE *out, TranslationUnit *tu) {
 			fprintf(out, "%06X", exec_address);
 			fprintf(out, "\n");
 			return;
+		}
+	}
+}
+
+void fprint_modificaiton_record(FILE *out, TranslationUnit *tu) {
+	for (LinkedNode *node = tu->statements->head->link; node; 
+			node = node->link) {
+		SicStatement *statement = (SicStatement*) node->value;
+		if (statement->e) {
+			if (!statement->operands.is_literal) {
+				fprintf(out, "M");
+				fprintf(out, "%06X", statement->address + 1);
+				fprintf(out, "%02X", 5);
+				fprintf(out, "\n");
+			}
 		}
 	}
 }

@@ -96,6 +96,7 @@ void free_translation_unit(TranslationUnit *tu) {
 void generate_obj(FILE *out, TranslationUnit *tu) {
 	fprint_header_record(out, tu);
 	fprint_text_record(out, tu);
+	fprint_modificaiton_record(out, tu);
 	fprint_end_record(out, tu);
 }
 

@@ -151,4 +151,9 @@ void fprint_end_record(FILE *out, TranslationUnit *tu);
 /*
  * Prints the end record for translation unit tu.
  */
+
+void fprint_modificaiton_record(FILE *out, TranslationUnit *tu);
+/*
+ * Prints the modification record for translation unit tu.
+ */
 #endif
