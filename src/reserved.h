@@ -1,3 +1,15 @@
+/*
+ * reserved.h
+ *
+ * To parse asm files, we need a dictionary of reserved words, including
+ * operators and directives like START, END, BASE etc. This module provides
+ * the ReservedDict type that you can use to read a record file of reserved
+ * words and interpret them during asm assembly.
+ *
+ * The functions below are basically wrapper fuctions for the generic_dict
+ * module, so they are pretty self-explanatory.
+ */
+
 #ifndef RESERVED_H
 #define RESERVED_H
 #include "generic_dict.h"
