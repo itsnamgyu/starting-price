@@ -5,26 +5,6 @@
 #include <assert.h>
 #include <string.h>
 
-/* Note these definitions
-#define INVALID_FORMAT_ERROR 1
-#define TOO_MANY_ARGUMENTS_ERROR 2
-#define COMMAND_TOO_LONG_ERROR 3
-#define ARGUMENT_TOO_LONG_ERROR 4
-
-#define COMMAND_LENGTH 120
-#define TOKEN_COUNT 4
-#define ARGUMENT_COUNT 3
-#define TOKEN_LENGTH 40
-
-typedef struct _ParsedCommand {
-	char original_command[COMMAND_LENGTH];
-	char tokenized_command[COMMAND_LENGTH];
-	char *operator;
-	char *arguments[ARGUMENT_COUNT];
-	int argument_count;
-} ParsedCommand;
-*/
-
 static inline int is_comma(char c);
 // Return whether c is a comma. Functionalized for readability.
 

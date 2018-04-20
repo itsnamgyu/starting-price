@@ -9,15 +9,6 @@
 #include "global.h"
 #include "string.h"
 
-/* Recall these definitions
-typedef struct _TranslationUnit {
-	HashTable *opcodes;
-	ReservedDict *reserved;
-	SicStatementList *statements;
-	SymbolTable *symbols;
-} TranslationUnit;
-*/
-
 static TranslationUnit *tu = NULL;
 
 int assemble_1(FILE *out, ParsedCommand *pc) {

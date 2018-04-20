@@ -6,14 +6,6 @@
 
 #define OPCODE_TABLE_SIZE 20
 
-/* Recall these definitions
-typedef struct _Opcode {
-	unsigned char raw;
-} Opcode;
-
-#define HashTable Dict;
-*/
-
 #ifdef TEST
 #undef TEST
 #include "generic_dict.c"

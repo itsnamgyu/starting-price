@@ -3,30 +3,6 @@
 
 #include <stdlib.h>
 
-/* Recall these definitions
-typedef enum _ReservedType {
-	MEM_OPERATION = 8,
-	REG_OPERATION = 9,
-	REG_PAIR_OPERATION = 10,
-	REG_N_OPERATION = 11,
-	N_OPERATION = 12,
-	BYTE = 0,
-	WORD = 1,
-	RBYTE = 2,
-	RWORD = 3,
-	START = 4,
-	END = 5,
-	BASE = 6,
-	NOBASE = 7
-} ReservedType;
-
-typedef struct _ReservedValue {
-	ReservedType type;
-} ReservedValue;
-
-typedef Dict ReservedDict;
-*/
-
 static const int RESERVED_DICT_SIZE = 40;
 
 ReservedDict *new_reserved_dict() {

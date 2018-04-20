@@ -3,13 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Recall this definition
-struct Block {
-	unsigned char data[BLOCK_SIZE];
-	int current;
-}
-*/
-
 #ifdef TEST
 // Manual unit test for this module
 // Refer to the README for testing instructions
