@@ -142,16 +142,24 @@ static void free_operation(void *_op) {
 #ifdef TEST
 #undef TEST
 #include "parser.c"
+#include "generic_list.c"
+#include "utility.c"
 int f1(FILE *out, ParsedCommand *pc) {
+	(void) out;
+	(void) pc;
 	return 1;
 }
 
 int f2(FILE *out, ParsedCommand *pc) {
-	return 2;
+	(void) out;
+	(void) pc;
+	return 0;
 }
 
 int f3(FILE *out, ParsedCommand *pc) {
-	return 3;
+	(void) out;
+	(void) pc;
+	return 1;
 }
 
 int main(void) {
@@ -167,13 +175,13 @@ int main(void) {
 	assert(interpret_and_free(ip, pc) == 1);
 
 	pc = parse_command("ho ajif    \t", &error_code);
-	assert(interpret_and_free(ip, pc) == 2);
+	assert(interpret_and_free(ip, pc) == 0);
 	
 	pc = parse_command("ho   \t fds, \t d2", &error_code);
 	assert(interpret_and_free(ip, pc) == 0);
 	
 	pc = parse_command("ho   \t fds, \t d2 , \t ji", &error_code);
-	assert(interpret_and_free(ip, pc) == 3);
+	assert(interpret_and_free(ip, pc) == 1);
 			
 	printf("----------------------------------------\n");
 	printf("Automatic tests successful!\n");
