@@ -4,9 +4,6 @@
  * This module provides a functions related to storing and priting the
  * users command history. Basically, this is for the hi[story] command.
  */
-
-#ifndef HISTORY_H
-#define HISTORY_H
 #include "main.h"
 
 #include <stdio.h>
@@ -53,4 +50,3 @@ int has_history(History *history);
 /*	Description
  *  Return whether there are any commands in the history record.
  */
-#endif

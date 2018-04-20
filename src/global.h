@@ -1,3 +1,4 @@
+#pragma once
 #include "history.h"
 #include "hashtable.h"
 #include "memory.h"

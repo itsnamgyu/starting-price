@@ -1,7 +1,4 @@
-#ifndef GENERIC_DICT_H
-#define GENERIC_DICT_H
-#include <stdio.h>
-
+#pragma once
 /*
  * generic_dict
  *
@@ -13,6 +10,7 @@
  * following dictionary functions to handle that type. All of the hash table
  * related gizmo's are implemented within this module!
  */
+#include <stdio.h>
 
 typedef struct _BucketNode {
 	char *key;
@@ -86,4 +84,3 @@ void ignore_dict_values(void *value);
  * For example, references to statically allocated strings. This srsly doesn't
  * do anything with the passed *value*.
  */
-#endif

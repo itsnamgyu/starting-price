@@ -1,8 +1,6 @@
+#pragma once
 #define BLOCK_SIZE 1048576
 #define MAX_DUMP_LENGTH 1000000
-
-#ifndef MEMORY_H
-#define MEMORY_H
 
 #include <stdio.h>
 
@@ -54,4 +52,3 @@ void reset_memory(Block *block);
 /*	Description
  *  Fill the memory block with 0s.
  */
-#endif

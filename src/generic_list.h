@@ -1,3 +1,4 @@
+#pragma once
 /*
  * generic_list
  *
@@ -12,9 +13,6 @@
  * following linked-list functions to handle that type. All of the linked-list
  * related gizmo's are implemented within this module!
  */
-
-#ifndef GENERIC_LIST_H
-#define GENERIC_LIST_H
 #include <stdio.h>
 
 typedef struct _LinkedNode {
@@ -59,4 +57,3 @@ void ignore_list_values(void *value);
  * For example, references to statically allocated strings. This srsly doesn't
  * do anything with the passed *value*.
  */
-#endif

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * interpreter.h
  *
@@ -19,9 +20,6 @@
  * interpret(Interpreter ip, ParsedCommand pc), and the appropriate function
  * will be called with the user's arguments.
  */
-
-#ifndef INTERPRETER_H
-#define INTERPRETER_H
 #include "parser.h"
 
 typedef struct _OperationNode {
@@ -39,6 +37,7 @@ typedef struct _OperationNode {
 typedef struct _Interpreter {
 	OperationNode *head;
 	OperationNode *last;
+	List *history_list;
 	FILE *output_stream;
 } Interpreter;
 
@@ -74,4 +73,3 @@ int interpret_and_free(Interpreter *ip, ParsedCommand *pc);
  * Call interpret with *ip* and *pc* and free *pc* - since there is usually
  * no need to use it after it has been interpreted.
  */
-#endif

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * asm_helper.h
  *
@@ -6,8 +7,6 @@
  *
  */
 
-#ifndef ASM_HELPER_H
-#define ASM_HELPER_H
 #include "reserved.h"
 #include "symbol.h"
 #include "hashtable.h"
@@ -160,4 +159,3 @@ void fprint_modificaiton_record(FILE *out, TranslationUnit *tu);
 /*
  * Prints the modification record for translation unit tu.
  */
-#endif

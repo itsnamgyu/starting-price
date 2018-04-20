@@ -1,5 +1,4 @@
-#ifndef HASHTABLE_H
-#define HASHTABLE_H
+#pragma once
 #include "generic_dict.h"
 
 #include <stdio.h>
@@ -46,4 +45,3 @@ void fprint_hash_table(FILE *out, HashTable *table);
 /*	Description
  *  Prints the hash-table to a human-readable form to an output stream
  */
-#endif

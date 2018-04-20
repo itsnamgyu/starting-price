@@ -1,3 +1,4 @@
+#pragma once
 /*
  * symbol.h
  *
@@ -7,9 +8,6 @@
  * The functions are just wrapper functions for the generic dict type, so
  * they are pretty self explanatory.
  */
-
-#ifndef SYMBOL_H
-#define SYMBOL_H
 #include "generic_dict.h"
 
 #include <stdio.h>
@@ -41,4 +39,3 @@ void fprint_symbols(FILE *out, SymbolDict *dict);
 #define new_symbol_table new_symbol_dict
 #define add_to_symbol_table add_to_symbol_dict
 #define free_symbol_table free_symbol_dict
-#endif

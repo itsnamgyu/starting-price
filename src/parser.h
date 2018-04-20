@@ -1,3 +1,4 @@
+#pragma once
 /*
  * parser.h
  *
@@ -14,8 +15,6 @@
  * 
  * Note that TOKEN_COUNT is the maximum number of arguments + 1
  */
-#ifndef PARSER_H
-#define PARSER_H
 #include "main.h"
 
 #define INVALID_FORMAT_ERROR 1
@@ -48,4 +47,3 @@ void free_parsed_command(ParsedCommand *parsed);
 /*
  * Deallocate the givne ParsedCommand
  */
-#endif 

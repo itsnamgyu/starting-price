@@ -1,3 +1,4 @@
+#pragma once
 /*
  * assemble.h
  *
@@ -12,9 +13,6 @@
  * Note that most of the implementations involve calling helper functions from
  * asm_helper.h.
  */
-
-#ifndef ASSEMBLE_H
-#define ASSEMBLE_H
 #include "hashtable.h"
 #include "reserved.h"
 #include "symbol.h"
@@ -67,4 +65,3 @@ void print_symlist(FILE *out, TranslationUnit *tu);
  * Print the list of symbols defined in the TranslationUnit and print it to
  * the *out* stream.
  */
-#endif

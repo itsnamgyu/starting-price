@@ -1,3 +1,4 @@
+#pragma once
 /*
  * reserved.h
  *
@@ -9,9 +10,6 @@
  * The functions below are basically wrapper fuctions for the generic_dict
  * module, so they are pretty self-explanatory.
  */
-
-#ifndef RESERVED_H
-#define RESERVED_H
 #include "generic_dict.h"
 
 #define RESERVED_OPERATION_FLAG 8
@@ -45,4 +43,3 @@ void free_reserved_dict(ReservedDict *dict);
 void add_to_reserved_dict(ReservedDict *dict, char *key, ReservedType type);
 
 int find_reserved_type(ReservedDict *dict, char *key, ReservedType *type);
-#endif
