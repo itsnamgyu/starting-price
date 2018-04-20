@@ -2,7 +2,6 @@
 #include "file.h"
 #include "hashtable.h"
 #include "help.h"
-#include "history.h"
 #include "memory.h"
 #include "parser.h"
 #include "interpreter.h"
@@ -31,8 +30,6 @@ static void load_reserved_dict(ReservedDict *dict, FILE *in);
 
 static int quit_0(FILE *out, ParsedCommand *pc);
 
-static int history_0(FILE *out, ParsedCommand *pc);
-
 static int dir_0(FILE *out, ParsedCommand *pc);
 
 static int dump_0(FILE *out, ParsedCommand *pc);
@@ -58,7 +55,6 @@ static int type_1(FILE *out, ParsedCommand *pc);
 Global G;
 
 int main(void) {
-	G.history = new_history();
 	G.table = new_hash_table();
 	G.block = new_memory_block();
 	G.reserved = new_reserved_dict();
@@ -81,8 +77,6 @@ int main(void) {
 	}
 
 	Interpreter *ip = new_interpreter(stdout);
-	add_operation(ip, "history", 0, history_0);
-	add_operation(ip, "hi", 0, history_0);
 	add_operation(ip, "q", 0, quit_0);
 	add_operation(ip, "quit", 0, quit_0);
 	add_operation(ip, "dir", 0, dir_0);
@@ -133,13 +127,7 @@ int main(void) {
 			continue;
 		}
 		
-		if (interpret(ip, pc)) {
-			int is_history = 0;
-			is_history = is_history || !strcmp(pc->operator, "history");
-			is_history = is_history || !strcmp(pc->operator, "hi");
-
-			if (!is_history) add_history(G.history, command);
-		}
+		interpret(ip, pc);
 		free(pc);
 	}
 
@@ -191,19 +179,8 @@ static void load_reserved_dict(ReservedDict *dict, FILE *in) {
 	}
 }
 
-static int history_0(FILE *out, ParsedCommand *pc) {
-	int print = has_history(G.history);
-
-	add_history(G.history, pc->original_command);
-
-	if (print) fprint_history(stdout, G.history);
-	
-	return 1;
-}
-
 static int quit_0(FILE *out, ParsedCommand *pc) {
 	free(G.block);
-	free_history(G.history);
 	free_hash_table(G.table);
 
 	exit(0);
