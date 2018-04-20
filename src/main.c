@@ -69,8 +69,7 @@ int main(void) {
 
 	FILE *reserved_in;
 	if (!(reserved_in = fopen(RESERVED_FILE, "r")))
-		printf("error opening %s. continuing without reserved tokens\n",
-				RESERVED_FILE);
+		printf("error opening %s. continuing without reserved tokens\n", RESERVED_FILE);
 	else {
 		load_reserved_dict(G.reserved, reserved_in);
 		fclose(reserved_in);
@@ -108,10 +107,7 @@ int main(void) {
 			printf("error: command is too long\n"); 
 			continue;
 		}
-
-		if (!*command) {
-			continue;
-		}
+		if (!*command) continue;
 
 		int error_code;
 		if (!(pc = parse_command(command, &error_code))) {
@@ -130,6 +126,11 @@ int main(void) {
 		interpret(ip, pc);
 		free(pc);
 	}
+
+	free_interpreter(ip);
+	free_hash_table(G.table);
+	free(G.block);
+	free_reserved_dict(G.reserved);
 
 	return 0;
 }
