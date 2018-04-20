@@ -30,6 +30,11 @@ List *new_list();
  * Allocates and returns a new linked-list.
  */
 
+int list_empty(List *list);
+/*
+ * Check if list is empty
+ */
+
 void add_to_list(List *list, void *value);
 /*
  * Adds a node containing *value* to *list*.

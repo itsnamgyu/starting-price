@@ -71,6 +71,10 @@ void add_to_list(List *list, void *value) {
 	list->last = node;
 }
 
+int list_empty(List *list) {
+	return (list->head->link == NULL);
+}
+
 void free_list(List *list, void (*free_value) (void *value)) {
 	LinkedNode *next;
 
