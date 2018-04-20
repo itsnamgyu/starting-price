@@ -24,7 +24,7 @@ void fprint_dir(FILE *out) {
 	struct dirent *entry;
 	DIR *directory = opendir(".");
 
-	// For each file in current directory
+	// for each file in current directory
 	while ((entry = readdir(directory))) {
 		char *filename = entry->d_name;
 		struct stat buffer;
@@ -38,8 +38,13 @@ void fprint_dir(FILE *out) {
 		}
 
 		fprintf(out, "%s", filename);
+
+		// print \ at the end if it's a directory
 		if (entry->d_type == DT_DIR) fprintf(out, "\\");
+
+		// print * at the end if it's an executable
 		else if (buffer.st_mode & S_IXUSR) fprintf(out, "*");
+
 		fprintf(out, "\t");
 	}
 	fprintf(out, "\n");
@@ -47,19 +52,12 @@ void fprint_dir(FILE *out) {
 
 int fprint_file(FILE *out, char *filename) {
 	FILE *file;
+	if (!(file = fopen(filename, "r"))) return 0;
+	if (feof(file)) return 0;
 
-	// Open file and return failure if there was a problem
-	if (!(file = fopen(filename, "r")))
-		return 0;
-
-	if (feof(file))
-		return 0;
-	
-	
 	// Print all characters from 'file' to output stream
 	char c;
 	while ((c = fgetc(file)) != EOF)
 		fprintf(out, "%c", c);
-
 	return 1;
 }
