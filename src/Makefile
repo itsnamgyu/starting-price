@@ -7,16 +7,23 @@ ifndef MAINC
 MAINC = main.c
 endif
 
-SRCS = register.c generic_list.c generic_dict.c file.c hashtable.c help.c history.c memory.c parser.c interpreter.c symbol.c reserved.c assemble.c asm_helper.c $(MAINC)
+OBJDIR = obj
 
-OBJS = $(SRCS:.c=.o)
+SRC = register.c generic_list.c generic_dict.c file.c hashtable.c help.c history.c memory.c parser.c interpreter.c symbol.c reserved.c assemble.c asm_helper.c $(MAINC)
+#OBJ = $(SRC:.c=.o)
+OBJ = $(patsubst %.c, $(OBJDIR)/%.o, $(SRC))
 
 ifndef TARGET
 TARGET = a.out
 endif
 
-$(TARGET) : $(OBJS)
-	$(CC) -o $@ $(OBJS) $(LIBS)
+$(TARGET) : $(OBJ)
+	$(CC) -o $@ $(OBJ)
+
+$(OBJDIR)/%.o : %.c
+	@mkdir -p $@D
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
-	rm $(OBJS) $(TARGET)
+	@rm -rf $(OBJDIR)
+	@rm a.out
