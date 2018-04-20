@@ -20,24 +20,14 @@
  * interpret(Interpreter ip, ParsedCommand pc), and the appropriate function
  * will be called with the user's arguments.
  */
-#include "parser.h"
+#include <stdbool.h>
 
-typedef struct _OperationNode {
-	char operator[TOKEN_LENGTH];
-	int argument_count;
-	int (*function)(FILE*, ParsedCommand*);
-	struct _OperationNode *link;
-} OperationNode;
-/*
- * Linked-list node for storing the interpretable operations. Note that
- * the module treats the same operator with different number of arguments
- * as separate 'Operation's.
- */
+#include "parser.h"
+#include "generic_list.h"
 
 typedef struct _Interpreter {
-	OperationNode *head;
-	OperationNode *last;
-	List *history_list;
+	List *operations;
+	List *history;
 	FILE *output_stream;
 } Interpreter;
 
@@ -59,7 +49,7 @@ void add_operation(Interpreter *ip, char *operator,
  * inputs something like "command argument1 argument2".
  */
 
-int interpret(Interpreter *ip, ParsedCommand *pc);
+bool interpret(Interpreter *ip, ParsedCommand *pc);
 /*
  * Pass the user input to *ip* as a ParsedCommand *pc* and the interpretor
  * will 'magically' interpret that command and call the function within
@@ -68,8 +58,13 @@ int interpret(Interpreter *ip, ParsedCommand *pc);
  * Return FALSE is there is no such operation.
  */
 
-int interpret_and_free(Interpreter *ip, ParsedCommand *pc);
+bool interpret_and_free(Interpreter *ip, ParsedCommand *pc);
 /*
  * Call interpret with *ip* and *pc* and free *pc* - since there is usually
  * no need to use it after it has been interpreted.
+ */
+
+void fprint_command_history(FILE *out, Interpreter *ip);
+/*
+ *  Print the list of commands that were successfully interpreted/executed by the interpeter
  */
