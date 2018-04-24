@@ -52,7 +52,7 @@ void add_operation(Interpreter *ip, char *operator, int argument_count, void *fu
 }
 
 bool interpret(Interpreter *ip, ParsedCommand *pc) {
-	char *empty_msg = "warning: interpretting from an empty interpreter";
+	const char *empty_msg = "warning: interpretting from an empty interpreter";
 	if (list_empty(ip->operations)) fprintf(stderr, "%s\n", empty_msg);
 
 	FILE *out = ip->output_stream;
