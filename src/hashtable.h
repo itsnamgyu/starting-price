@@ -1,7 +1,7 @@
 #pragma once
-#include "generic_dict.h"
-
 #include <stdio.h>
+
+#include "generic_dict.h"
 
 typedef struct _Opcode {
 	unsigned char raw;
@@ -45,3 +45,9 @@ void fprint_hash_table(FILE *out, HashTable *table);
 /*	Description
  *  Prints the hash-table to a human-readable form to an output stream
  */
+
+#ifdef defined(TEST) && !defined(HASHTABLE_C)
+#undef TEST
+#include "hashtable.c"
+#define TEST 0
+#endif

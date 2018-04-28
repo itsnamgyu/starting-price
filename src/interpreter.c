@@ -1,3 +1,5 @@
+#define INTERPRETER_C
+
 #include "utility.h"
 #include "interpreter.h"
 #include "generic_list.h"
@@ -141,9 +143,6 @@ static void free_operation(void *_op) {
 
 #ifdef TEST
 #undef TEST
-#include "parser.c"
-#include "generic_list.c"
-#include "utility.c"
 int f1(FILE *out, ParsedCommand *pc) {
 	(void) out;
 	(void) pc;

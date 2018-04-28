@@ -39,12 +39,12 @@ void free_dict(Dict *dict, void (*free_value) (void *value));
  * custom type using a custom free function (that you provide ;)
  */
 
-void add_to_dict(Dict *dict, char *key, void *value);
+void add_to_dict(Dict *dict, const char *key, void *value);
 /*
  * Adds a key-value pair to the dictionary.
  */
 
-int find_from_dict(Dict *dict, char *key, void **value);
+int find_from_dict(Dict *dict, const char *key, void **value);
 /*
  * Finds a value cooresponing to *key* within *dict*. If found, it is assigned
  * to *value.
@@ -52,7 +52,7 @@ int find_from_dict(Dict *dict, char *key, void **value);
  * Return success as boolean.
  */
 
-int dict_contains(Dict *dict, char *key);
+int dict_contains(Dict *dict, const char *key);
 /*
  * Return whether if *key* exists within *dict*.
  */
@@ -84,3 +84,9 @@ void ignore_dict_values(void *value);
  * For example, references to statically allocated strings. This srsly doesn't
  * do anything with the passed *value*.
  */
+
+#if defined(TEST) && !defined(GENERIC_DICT_C)
+#undef TEST
+#include "generic_dict.c"
+#define TEST 0
+#endif

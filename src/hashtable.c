@@ -1,3 +1,5 @@
+#define HASHTABLE_C
+
 #include "hashtable.h"
 
 #include <stdio.h>
@@ -8,7 +10,6 @@
 
 #ifdef TEST
 #undef TEST
-#include "generic_dict.c"
 // Manual unit test for this module
 // Refer to the README for testing instructions
 int main(void) {

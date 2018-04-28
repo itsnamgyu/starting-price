@@ -62,3 +62,9 @@ void ignore_list_values(void *value);
  * For example, references to statically allocated strings. This srsly doesn't
  * do anything with the passed *value*.
  */
+
+#if defined(TEST) && !defined(GENERIC_DICT_C)
+#undef TEST
+#include "generic_dict.c"
+#define TEST
+#endif

@@ -1,55 +1,10 @@
-#include "generic_list.h"
+#define GENERIC_LIST_C
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
-/* Recall these definitions
-typedef struct _LinkedNode {
-	void *value;
-	struct _LinkedNode *link;
-} LinkedNode;
-
-typedef struct _List {
-	LinkedNode *head;
-	LinkedNode *last;
-} List;
-*/
-#ifdef TEST
-void print_string(FILE *out, void *string) {
-	fprintf(out, "%s", (char*) string);
-}
-
-int main(void) {
-	List *list = new_list();
-
-	add_to_list(list, "Hello");
-	add_to_list(list, "Yo");
-
-	assert(!strcmp(list->head->link->value, "Hello"));
-	assert(!strcmp(list->head->link->link->value, "Yo"));
-
-	free_list(list, ignore_list_values);
-
-	printf("----------------------------------------\n");
-	printf("Automatic tests successful!\n");
-
-	{
-		printf("\n");
-
-		List *list = new_list();
-
-		add_to_list(list, "Hello");
-		add_to_list(list, "Yo");
-
-		fprint_list(stdout, list, print_string);
-
-		free_list(list, ignore_list_values);
-	}
-
-	return 0;
-}
-#endif
+#include "generic_list.h"
 
 List *new_list() {
 	List *list = malloc(sizeof(List));
@@ -98,3 +53,39 @@ void ignore_list_values(void *value) {
 	// suppress unused warning
 	(void) value;
 }
+
+#ifdef TEST
+void print_string(FILE *out, void *string) {
+	fprintf(out, "%s", (char*) string);
+}
+
+int main(void) {
+	List *list = new_list();
+
+	add_to_list(list, "Hello");
+	add_to_list(list, "Yo");
+
+	assert(!strcmp(list->head->link->value, "Hello"));
+	assert(!strcmp(list->head->link->link->value, "Yo"));
+
+	free_list(list, ignore_list_values);
+
+	printf("----------------------------------------\n");
+	printf("Automatic tests successful!\n");
+
+	{
+		printf("\n");
+
+		List *list = new_list();
+
+		add_to_list(list, "Hello");
+		add_to_list(list, "Yo");
+
+		fprint_list(stdout, list, print_string);
+
+		free_list(list, ignore_list_values);
+	}
+
+	return 0;
+}
+#endif
