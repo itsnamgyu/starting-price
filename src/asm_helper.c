@@ -151,8 +151,7 @@ static int sscan_bytes(char **cursor, SicStatement *statement);
  * are preceeding whitespaces, return FALSE.
  */
 
-static int read_reserved(
-		char *word, SicStatement *statement, ReservedDict *reserved);
+static int read_reserved(char *word, SicStatement *statement, ReservedDict *reserved);
 /*
  * Check if *word* is a reserved word. If so, save the reserved
  * word to statement->reserved_string and set (ReservedType) statement->type
@@ -212,11 +211,6 @@ static inline int is_reserved(char *word, ReservedDict *reserved);
 
 #ifdef TEST
 #undef TEST
-#include "generic_list.c"
-#include "generic_dict.c"
-#include "symbol.c"
-#include "reserved.c"
-#include "hashtable.c"
 int main(void) {
 	return 0;
 }
@@ -419,8 +413,7 @@ int validate_statements(FILE *out, TranslationUnit *tu) {
 	return 1;
 }
 
-static void fflush_text_record_line(FILE *out, HashTable *opcodes,
-		LinkedNode *start_node, LinkedNode *end_node) {
+static void fflush_text_record_line(FILE *out, HashTable *opcodes, LinkedNode *start_node, LinkedNode *end_node) {
 	for (LinkedNode *node = start_node; node != end_node; node = node->link)
 		fprint_statement_in_hex(out, (SicStatement*) node->value, opcodes);
 }
@@ -601,8 +594,7 @@ void fprint_lst_line(FILE *out, SicStatement *statement, HashTable *opcodes) {
 	fprint_statement_in_hex(out, statement, opcodes);
 }
 
-void fprint_statement_in_hex(FILE *out, SicStatement *statement, 
-		HashTable *opcodes) {
+void fprint_statement_in_hex(FILE *out, SicStatement *statement, HashTable *opcodes) {
 	unsigned char opcode;	
 	if (statement->type & RESERVED_OPERATION_FLAG) {
 		if (!find_from_hash_table(opcodes, statement->reserved_string, 
@@ -749,8 +741,7 @@ static int sscan_int(char **cursor, int require_comma_separator) {
 	return n;
 }
 
-static int sscan_register(
-		char **cursor, Register *reg, int require_comma_separator) {
+static int sscan_register(char **cursor, Register *reg, int require_comma_separator) {
 	char *word = sscan_word(cursor, require_comma_separator);
 	if (!word) return 0;
 	
@@ -971,8 +962,7 @@ static inline int is_reserved(char *word, ReservedDict *reserved) {
 	else return dict_contains(reserved, word);
 }
 
-static int read_reserved(
-		char *word, SicStatement *statement, ReservedDict *reserved) {
+static int read_reserved(char *word, SicStatement *statement, ReservedDict *reserved) {
 	if (*word == '+') {
 		// this instruction is extended so this must be a memory operator
 		if (find_reserved_type(reserved, word + 1, &statement->type)) {
@@ -996,9 +986,7 @@ static int read_reserved(
 	return 0;
 }
 
-static int sscan_label_and_reserved(
-		char **asm_line_cursor, SicStatement *statement, 
-		ReservedDict *reserved) {
+static int sscan_label_and_reserved(char **asm_line_cursor, SicStatement *statement, ReservedDict *reserved) {
 	// All asm lines start with an optional label and a required
 	// reserved token like an operand or START, RBYTE etc.
 	char *first_word = sscan_word(asm_line_cursor, SSCAN_WORD_NO_COMMA);
@@ -1115,9 +1103,7 @@ static int read_line(FILE *in, char **string) {
 }
 
 static inline void skip_whitespaces(char **cursor) {
-	while (is_whitespace(**cursor) && **cursor) {
-		(*cursor) += 1;
-	}
+	while (is_whitespace(**cursor) && **cursor) (*cursor) += 1;
 }
 
 static inline int skip_whitespaces_and_comma(char **cursor) {
@@ -1132,4 +1118,3 @@ static inline int skip_whitespaces_and_comma(char **cursor) {
 
 	return passed_comma;
 }
-
