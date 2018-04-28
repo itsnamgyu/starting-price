@@ -46,7 +46,7 @@ void fprint_hash_table(FILE *out, HashTable *table);
  *  Prints the hash-table to a human-readable form to an output stream
  */
 
-#ifdef defined(TEST) && !defined(HASHTABLE_C)
+#if defined(TEST) && !defined(HASHTABLE_C)
 #undef TEST
 #include "hashtable.c"
 #define TEST 0
