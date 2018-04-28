@@ -65,6 +65,6 @@ void ignore_list_values(void *value);
 
 #if defined(TEST) && !defined(GENERIC_DICT_C)
 #undef TEST
-#include "generic_dict.c"
+#include "generic_list.c"
 #define TEST
 #endif
