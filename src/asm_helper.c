@@ -9,6 +9,8 @@
  * extensively documented. Enjoy!
  */
 
+#define ASM_HELPER_C
+
 #include "asm_helper.h"
 #include "assemble.h"
 #include "hashtable.h"
@@ -21,9 +23,7 @@
 #include <string.h>
 #include <assert.h>
 
-static int sscan_label_and_reserved(
-		char **asm_line_cursor, SicStatement *statement, 
-		ReservedDict *reserved);
+static int sscan_label_and_reserved(char **asm_line_cursor, SicStatement *statement, ReservedDict *reserved);
 /*
  * Pass 1 Step 1
  *
@@ -113,8 +113,7 @@ static int sscan_int(char **cursor, int require_comma_separator);
  * requirement is not met, return NULL.
  */
 
-static int sscan_register(
-		char **cursor, Register *reg, int require_comma_separator);
+static int sscan_register(char **cursor, Register *reg, int require_comma_separator);
 /*
  * Scans for a register like X, PC... following the character pointed by the
  * string cursor, ignoring whitespaces. This moves the cursor to the
