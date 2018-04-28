@@ -1,8 +1,8 @@
 #pragma once
+#include <stdio.h>
+
 #define BLOCK_SIZE 1048576
 #define MAX_DUMP_LENGTH 1000000
-
-#include <stdio.h>
 
 typedef struct _Block {
 	unsigned char data[BLOCK_SIZE];
@@ -52,3 +52,9 @@ void reset_memory(Block *block);
 /*	Description
  *  Fill the memory block with 0s.
  */
+
+#ifdef TEST
+#undef TEST
+#include "memory.c"
+#define TEST 0
+#endif

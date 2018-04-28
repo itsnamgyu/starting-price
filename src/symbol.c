@@ -1,3 +1,5 @@
+#define SYMBOL_C
+
 #include "symbol.h"
 #include "generic_dict.h"
 

@@ -26,6 +26,7 @@
 #define ARGUMENT_COUNT 3
 #define TOKEN_LENGTH 40
 
+
 typedef struct _ParsedCommand {
 	char original_command[COMMAND_LENGTH];
 	char tokenized_command[COMMAND_LENGTH];
@@ -33,6 +34,7 @@ typedef struct _ParsedCommand {
 	char *arguments[ARGUMENT_COUNT];
 	int argument_count;
 } ParsedCommand;
+
 
 ParsedCommand *parse_command(char *command, int *error_code);
 /*
@@ -47,3 +49,10 @@ void free_parsed_command(ParsedCommand *parsed);
 /*
  * Deallocate the givne ParsedCommand
  */
+
+
+#if defined(TEST) && !defined(PARSER_C)
+#undef TEST
+#include "parser.c"
+#define TEST 0
+#endif
