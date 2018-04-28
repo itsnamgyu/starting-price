@@ -1,3 +1,4 @@
+#define MEMORY_C
 #include "memory.h"
 #include <assert.h>
 #include <stdio.h>

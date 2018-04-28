@@ -1,3 +1,5 @@
+#define REGISTER_C
+
 #include "register.h"
 
 #include <stdlib.h>

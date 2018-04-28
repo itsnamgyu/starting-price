@@ -1,3 +1,4 @@
+#define FILE_C
 #include "file.h"
 #include <stdio.h>
 #include <dirent.h>

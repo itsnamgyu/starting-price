@@ -1,3 +1,5 @@
+#define HELP_C
+
 #include "help.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,9 +1,11 @@
-#include "parser.h"
-
+#define PARSER_C
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+
+#include "parser.h"
+
 
 static inline int is_comma(char c);
 // Return whether c is a comma. Functionalized for readability.
@@ -18,51 +20,6 @@ static int validate_and_remove_commas(char *string);
 // Return whether the spacing and number of command tokens are valid and
 // save the (number of) tokens to token(s)(_count).
 
-#ifdef TEST
-int main(void) {
-	ParsedCommand *pc;
-	int error_code;
-	
-	pc = NULL;
-	pc = parse_command("ho    hoho,   koko,     mo", &error_code);
-	assert(pc && "command should be valid");
-
-	pc = NULL;
-	pc = parse_command("comma is not here!", &error_code);
-	assert(!pc && "command shouldn't be valid");
-	assert(error_code == INVALID_FORMAT_ERROR);
-
-	pc = NULL;
-	pc = parse_command("comma is, not there!", &error_code);
-	assert(!pc && "command shouldn't be valid");
-	assert(error_code == INVALID_FORMAT_ERROR);
-
-	pc = NULL;
-	pc = parse_command("too many, arguments, you, know", &error_code);
-	assert(!pc && "command shouldn't be valid");
-	assert(error_code == TOO_MANY_ARGUMENTS_ERROR);
-
-	pc = NULL;
-	pc = parse_command("yolo \t ho, \t ko, \t yo ", &error_code);
-	assert(pc && "command should be valid");
-	assert(!strcmp(pc->operator, "yolo"));
-	assert(!strcmp(pc->arguments[0], "ho"));
-	assert(!strcmp(pc->arguments[1], "ko"));
-	assert(!strcmp(pc->arguments[2], "yo"));
-
-	printf("----------------------------------------\n");
-	printf("Automatic tests successful!\n");
-
-	char *test_string = "yolo \t ho, \t ho, \t yo";
-	printf("\nParsing %s\n", test_string);
-	pc = parse_command("yolo \t ho, \t ko, \t yo ", &error_code);
-	printf("operator: %s\n", pc->operator);
-	for (int i = 0; i < pc->argument_count; ++i)
-		printf("argument%d: %s\n", i, pc->arguments[i]);
-
-	return 0;
-}
-#endif
 
 ParsedCommand *parse_command(char *command, int *error_code) {
 	ParsedCommand *pc = malloc(sizeof(ParsedCommand));
@@ -86,6 +43,7 @@ ParsedCommand *parse_command(char *command, int *error_code) {
 
 	return pc;
 }
+
 
 static inline int is_comma(char c) {
 	return c == ',';
@@ -145,3 +103,49 @@ static int validate_and_tokenize(char *string, int *token_count, char **tokens) 
 
 	return 1;
 }
+
+#ifdef TEST
+int main(void) {
+	ParsedCommand *pc;
+	int error_code;
+	
+	pc = NULL;
+	pc = parse_command("ho    hoho,   koko,     mo", &error_code);
+	assert(pc && "command should be valid");
+
+	pc = NULL;
+	pc = parse_command("comma is not here!", &error_code);
+	assert(!pc && "command shouldn't be valid");
+	assert(error_code == INVALID_FORMAT_ERROR);
+
+	pc = NULL;
+	pc = parse_command("comma is, not there!", &error_code);
+	assert(!pc && "command shouldn't be valid");
+	assert(error_code == INVALID_FORMAT_ERROR);
+
+	pc = NULL;
+	pc = parse_command("too many, arguments, you, know", &error_code);
+	assert(!pc && "command shouldn't be valid");
+	assert(error_code == TOO_MANY_ARGUMENTS_ERROR);
+
+	pc = NULL;
+	pc = parse_command("yolo \t ho, \t ko, \t yo ", &error_code);
+	assert(pc && "command should be valid");
+	assert(!strcmp(pc->operator, "yolo"));
+	assert(!strcmp(pc->arguments[0], "ho"));
+	assert(!strcmp(pc->arguments[1], "ko"));
+	assert(!strcmp(pc->arguments[2], "yo"));
+
+	printf("----------------------------------------\n");
+	printf("Automatic tests successful!\n");
+
+	char *test_string = "yolo \t ho, \t ho, \t yo";
+	printf("\nParsing %s\n", test_string);
+	pc = parse_command("yolo \t ho, \t ko, \t yo ", &error_code);
+	printf("operator: %s\n", pc->operator);
+	for (int i = 0; i < pc->argument_count; ++i)
+		printf("argument%d: %s\n", i, pc->arguments[i]);
+
+	return 0;
+}
+#endif

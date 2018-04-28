@@ -1,3 +1,4 @@
+#define MAIN_C
 #include "main.h"
 #include "file.h"
 #include "hashtable.h"

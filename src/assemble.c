@@ -1,3 +1,4 @@
+#define ASSEMBLE_C
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,3 +1,5 @@
+#define UTILITY_C
+
 #include "utility.h"
 
 #include <stdlib.h>

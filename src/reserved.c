@@ -1,3 +1,4 @@
+#define RESERVED_C
 #include "reserved.h"
 #include "generic_dict.h"
 
