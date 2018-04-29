@@ -44,9 +44,10 @@ bool add_to_estab(Estab *estab, const char *symbol, int reference_number, int ad
 }
 
 bool assign_reference_number_to_symbol(Estab *estab, const char *symbol, int reference_number) {
-	int n = find_from_estab_by_symbol(estab, symbol);
+	assert(0 <= reference_number && reference_number < REFERENCE_ARRAY_SIZE);
 
-	if (n < 1) return false;
+	int n = find_from_estab_by_symbol(estab, symbol);
+	if (n == -1) return false;
 	else estab->list[reference_number] = n;
 
 	return true;
