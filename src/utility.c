@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 char *malloc_strcpy(const char *string) {
 	if (string == NULL) return NULL;

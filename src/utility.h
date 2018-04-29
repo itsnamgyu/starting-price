@@ -14,8 +14,15 @@ char *malloc_strcpy(const char *string);
  * Note. If the *string* is NULL or the length is 0, returns NULL
  */
 
-#define print_line(DESCRIPTION) fprintf(stderr, "Line %-3d %s\n", __LINE__, DESCRIPTION);
+#define print_line(DESCRIPTION) fprintf(stderr, "File %-16s Line %-3d: %s\n", __FILE__, __LINE__, DESCRIPTION);
 /*
  * Debug function that prints the line number along with the specified description when the
  * current line is executed.
  */
+
+
+#if defined(TEST) && !defined(UTILITY_C)
+#undef TEST
+#include "utility.c"
+#define TEST 0
+#endif
