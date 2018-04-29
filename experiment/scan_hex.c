@@ -6,6 +6,13 @@ int main(void) {
 	int ho;
 	int ret;
 
+	int n;
+	printf("\nScan 100X\n");
+	ret = scanf("%100X%n", &ho, &n);
+	printf("Result: %d\n", ho);
+	printf("n: %d\n", n);
+	printf("Return: %d\n", ret);
+	
 	for (int i = 0; i < 100; i++) {
 		printf("\nScan Raw: ");
 		ret = scanf("%6X", &ho);
