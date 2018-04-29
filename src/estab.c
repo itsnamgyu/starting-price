@@ -43,6 +43,15 @@ bool add_to_estab(Estab *estab, const char *symbol, int reference_number, int ad
 	return true;
 }
 
+bool assign_reference_number_to_symbol(Estab *estab, const char *symbol, int reference_number) {
+	int n = find_from_estab_by_symbol(estab, symbol);
+
+	if (n < 1) return false;
+	else estab->list[reference_number] = n;
+
+	return true;
+}
+
 int find_from_estab_by_symbol(Estab *estab, const char *symbol) {
 	int *value;
 
@@ -78,6 +87,9 @@ int main(void) {
 	assert(find_from_estab_by_reference_number(estab, 2) == 2048);
 	assert(find_from_estab_by_symbol(estab, "Hollo") == -1);
 	assert(find_from_estab_by_reference_number(estab, 3) == -1);
+
+	assert(assign_reference_number_to_symbol(estab, "Hello", 3) == true);
+	assert(find_from_estab_by_reference_number(estab, 3) == 1024);
 
 	printf("----------------------------------------\n");
 	printf("Automatic tests successful!\n");

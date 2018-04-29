@@ -40,6 +40,12 @@ bool add_to_estab(Estab *estab, const char *symbol, int reference_number, int ad
  * Note that at least one of symbol or reference number must be specified.
  */
 
+bool assign_reference_number_to_symbol(Estab *estab, const char *symbol, int reference_number);
+/*
+ * TODO
+ *
+ */
+
 int find_from_estab_by_symbol(Estab *estab, const char *symbol);
 /*
  * Find address from estab using original symbol string
