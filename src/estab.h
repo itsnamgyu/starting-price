@@ -63,3 +63,10 @@ int find_from_estab_by_reference_number(Estab *estab, int reference_number);
  * -1: not found
  * default: the address that was found
  */
+
+
+#if defined(TEST) && !defined(ESTAB_C)
+#undef TEST
+#include "estab.c"
+#define TEST 0
+#endif
