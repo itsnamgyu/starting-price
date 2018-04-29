@@ -10,6 +10,7 @@ typedef struct _Block {
 	unsigned char _buffer[32];
 	unsigned char data[BLOCK_SIZE];
 	int current;
+	unsigned int load_address;
 } Block;
 /*	Description
  *	A memory block that stores 1 megabyte of unsigned chars.
@@ -56,7 +57,7 @@ void reset_memory(Block *block);
  *  Fill the memory block with 0s.
  */
 
-int read_value_from_memory(Block *block, int start, int size);
+unsigned int read_value_from_memory(Block *block, int start, int size);
 /* 
  * Read the value stored in memory, starting at the 'start'th byte, spanning 'size' half bytes.
  * If 'size' is an odd number, the start location is `start` * 2 + 1 half bytes.
@@ -77,6 +78,13 @@ void write_value_to_memory(Block *block, int start, int size, unsigned int value
  * if there is an issue with the arguments (which should be checked before this function is called).
  *
  */
+
+bool set_load_address(Block *block, unsigned int address);
+/*
+ * TODO
+ *
+ */
+
 
 #if defined(TEST) && !defined(MEMORY_C)
 #undef TEST

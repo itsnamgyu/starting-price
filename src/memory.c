@@ -65,7 +65,7 @@ void reset_memory(Block *block) {
 	block->current = 0;
 }
 
-int read_value_from_memory(Block *block, int start, int size) {
+unsigned int read_value_from_memory(Block *block, int start, int size) {
 	const bool odd_size = size % 2 == 1;
 	const int n_byte = (size + 1) / 2;
 	const unsigned char *lsb = block->data + start + n_byte - 1;
@@ -83,7 +83,7 @@ int read_value_from_memory(Block *block, int start, int size) {
 			result += c * digit;
 	}
 
-	return (int) result;
+	return result;
 }
 
 void write_value_to_memory(Block *block, int start, int size, unsigned int value) {
@@ -93,7 +93,8 @@ void write_value_to_memory(Block *block, int start, int size, unsigned int value
 
 	assert(0 <= size && size <= 8 && "memory operands size should be within this range");
 	assert(0 <= start && lsb < block->data + BLOCK_SIZE && "referenced cells should be within this range");
-	assert((unsigned int) value / (1 << size * 4) == 0 && "value must fit within the specified size");
+	// assert((unsigned int) value / (1 << size * 4) == 0 && "value must fit within the specified size");
+	// commented out > allow overflow since a valid program will return it
 
 	for (int i = 0; i < n_byte; ++i) {
 		unsigned int digit = 1 << i * 8;
@@ -107,6 +108,12 @@ void write_value_to_memory(Block *block, int start, int size, unsigned int value
 			*(lsb - i) = (value / digit) % 256;
 		}
 	}
+}
+
+bool set_load_address(Block *block, unsigned int address) {
+	if (address > BLOCK_SIZE) return false;
+	block->load_address = address;
+	return true;
 }
 
 
