@@ -1,8 +1,11 @@
 #define MEMORY_C
-#include "memory.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
+#include "memory.h"
 
 
 static inline void fprint_digit(FILE *out, int i);
@@ -19,8 +22,12 @@ Block *new_memory_block() {
 	Block *block = malloc(sizeof(Block));
 	for (int i = 0; i < BLOCK_SIZE; ++i)
 		block->data[i] = '\0';
-	block->current = 0;
+
+	for (int i = 0; i < BLOCK_BUFFER_SIZE; ++i)
+		block->_buffer[i] = '\0';
 	
+	block->current = 0;
+
 	return block;
 }
 
@@ -43,7 +50,7 @@ void dump_memory(FILE *out, Block *block, int start, int end) {
 
 	block->current = end + 1;
 	if (block->current == BLOCK_SIZE) block->current = 0;
-	
+
 	for (int i = start / 16 * 16; i < end / 16 * 16 + 16; i += 16) {
 		fprint_digit(out, i);
 		fprint_data_hex(out, block, start, end, i);
@@ -56,6 +63,50 @@ void dump_memory(FILE *out, Block *block, int start, int end) {
 void reset_memory(Block *block) {
 	for (int i = 0; i < BLOCK_SIZE; ++i) block->data[i] = 0;
 	block->current = 0;
+}
+
+int read_value_from_memory(Block *block, int start, int size) {
+	const bool odd_size = size % 2 == 1;
+	const int n_byte = (size + 1) / 2;
+	const unsigned char *lsb = block->data + start + n_byte - 1;
+
+	assert(0 <= size && size <= 8 && "memory operands size should be within this range");
+	assert(0 <= start && lsb < block->data + BLOCK_SIZE && "referenced cells should be within this range");
+
+	unsigned int result = 0;
+	for (int i = 0; i < n_byte; ++i) {
+		unsigned int digit = 1 << i * 8;
+		unsigned char c = *((unsigned char*) (lsb - i));
+		if (i == n_byte - 1 && odd_size)
+			result += (c % 16) * digit;
+		else
+			result += c * digit;
+	}
+
+	return (int) result;
+}
+
+void write_value_to_memory(Block *block, int start, int size, unsigned int value) {
+	const bool odd_size = size % 2 == 1;
+	const int n_byte = (size + 1) / 2;
+	unsigned char * const lsb = block->data + start + n_byte - 1;
+
+	assert(0 <= size && size <= 8 && "memory operands size should be within this range");
+	assert(0 <= start && lsb < block->data + BLOCK_SIZE && "referenced cells should be within this range");
+	assert((unsigned int) value / (1 << size * 4) == 0 && "value must fit within the specified size");
+
+	for (int i = 0; i < n_byte; ++i) {
+		unsigned int digit = 1 << i * 8;
+		if (i == n_byte - 1 && odd_size) {
+			unsigned char uchar = *(lsb - i);
+			uchar = uchar >> 4;
+			uchar = uchar << 4;
+			uchar += (value / digit) % 16;
+			*(lsb - i) = uchar;
+		} else {
+			*(lsb - i) = (value / digit) % 256;
+		}
+	}
 }
 
 
@@ -95,36 +146,70 @@ static inline void fprint_data_char(FILE *out, Block *block, int start, int end,
 
 #ifdef TEST
 int main(void) {
-	Block *block = new_memory_block();
+	{
+		Block *block = new_memory_block();
+		for (int i = 0; i < BLOCK_SIZE; ++i)
+			set_memory(block, i, i % 256);
 
-	for (int i = 0; i < BLOCK_SIZE; ++i)
-		set_memory(block, i, i % 256);
+		for (int i = 0; i < 256; ++i) {
+			assert(read_value_from_memory(block, i, 1) == i % 16);
+			assert(read_value_from_memory(block, i, 2) == i);
+		}
 
-	printf("Dump Test\n");
-	for (int i = 0; i < 2; ++i)
-		dump_memory(stdout, block, -1, -1);
+		assert(read_value_from_memory(block, 0, 3) == 1);
+		assert(read_value_from_memory(block, 0, 4) == 1);
+		assert(read_value_from_memory(block, 0, 5) == 1 * 256 + 2);
+		assert(read_value_from_memory(block, 0, 6) == 1 * 256 + 2);
+		assert(read_value_from_memory(block, 0, 7) == 1 * 256*256 + 2 * 256 + 3);
 
-	printf("\nDump Range & Offset Test\n");
-	dump_memory(stdout, block, 23, 48);
-	for (int i = 0; i < 2; ++i)
-		dump_memory(stdout, block, -1, -1);
+		write_value_to_memory(block, 0, 8, 0);
+		for (int i = 0; i < 4; ++i)
+			assert(block->data[i] == 0);
+		assert(block->data[4] != 0);
 
-	printf("\nOverflow Test\n");
-	dump_memory(stdout, block, BLOCK_SIZE - 4, -1);
-	for (int i = 0; i < 2; ++i)
-		dump_memory(stdout, block, -1, -1);
+		write_value_to_memory(block, 0, 7, (unsigned int) 0x89ABCDE);
+		assert(block->data[0] == 0x8);
+		assert(block->data[1] == 0x9A);
+		assert(block->data[2] == 0xBC);
+		assert(block->data[3] == 0xDE);
 
-	printf("\nRange & Overflow Test\n");
-	dump_memory(stdout, block, 0xFFFD7, 0xFFFE0);
-	for (int i = 0; i < 2; ++i)
-		dump_memory(stdout, block, -1, -1);
+		free(block);
+	}
 
-	printf("\nReset Test\n");
-	reset_memory(block);
-	for (int i = 0; i < 2; ++i)
-		dump_memory(stdout, block, -1, -1);
+	printf("----------------------------------------\n");
+	printf("Automatic tests successful!\n");
 
-	free(block);
+	{
+		Block *block = new_memory_block();
+		for (int i = 0; i < BLOCK_SIZE; ++i)
+			set_memory(block, i, i % 256);
+
+		printf("Dump Test\n");
+		for (int i = 0; i < 2; ++i)
+			dump_memory(stdout, block, -1, -1);
+
+		printf("\nDump Range & Offset Test\n");
+		dump_memory(stdout, block, 23, 48);
+		for (int i = 0; i < 2; ++i)
+			dump_memory(stdout, block, -1, -1);
+
+		printf("\nOverflow Test\n");
+		dump_memory(stdout, block, BLOCK_SIZE - 4, -1);
+		for (int i = 0; i < 2; ++i)
+			dump_memory(stdout, block, -1, -1);
+
+		printf("\nRange & Overflow Test\n");
+		dump_memory(stdout, block, 0xFFFD7, 0xFFFE0);
+		for (int i = 0; i < 2; ++i)
+			dump_memory(stdout, block, -1, -1);
+
+		printf("\nReset Test\n");
+		reset_memory(block);
+		for (int i = 0; i < 2; ++i)
+			dump_memory(stdout, block, -1, -1);
+
+		free(block);
+	}
 
 	return 0;
 }

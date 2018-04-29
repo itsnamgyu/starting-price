@@ -1,10 +1,13 @@
 #pragma once
 #include <stdio.h>
+#include <stdbool.h>
 
 #define BLOCK_SIZE 1048576
+#define BLOCK_BUFFER_SIZE 32
 #define MAX_DUMP_LENGTH 1000000
 
 typedef struct _Block {
+	unsigned char _buffer[32];
 	unsigned char data[BLOCK_SIZE];
 	int current;
 } Block;
@@ -53,7 +56,29 @@ void reset_memory(Block *block);
  *  Fill the memory block with 0s.
  */
 
-#ifdef TEST
+int read_value_from_memory(Block *block, int start, int size);
+/* 
+ * Read the value stored in memory, starting at the 'start'th byte, spanning 'size' half bytes.
+ * If 'size' is an odd number, the start location is `start` * 2 + 1 half bytes.
+ *
+ * This function is intended for use with modification records, therefore throws an assertion error
+ * if there is an issue with the arguments (which should be checked before this function is called).
+ *
+ * Return Value
+ * the value found
+ *
+ */
+
+void write_value_to_memory(Block *block, int start, int size, unsigned int value);
+/*
+ * Store the value in memory, in the same manner as retrieve value.
+ *
+ * This function is intended for use with modification records, therefore throws an assertion error
+ * if there is an issue with the arguments (which should be checked before this function is called).
+ *
+ */
+
+#if defined(TEST) && !defined(MEMORY_C)
 #undef TEST
 #include "memory.c"
 #define TEST 0
