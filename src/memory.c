@@ -140,7 +140,7 @@ void set_breakpoint(FILE *out, Block *block, unsigned int address) {
 
 int get_breakpoint(Block *block, unsigned int address, unsigned int length) {
 	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link) {
-		if (address <= *node->value && address < length) return *node->value;
+		if (address <= *node->value && *node->value < address + length) return *node->value;
 	return -1;
 }
 
