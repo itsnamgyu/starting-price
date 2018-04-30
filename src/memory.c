@@ -27,6 +27,7 @@ Block *new_memory_block() {
 		block->_buffer[i] = '\0';
 	
 	block->current = 0;
+	block->break_points = new_list();
 
 	return block;
 }
@@ -70,7 +71,7 @@ unsigned int read_value_from_memory(Block *block, int start, int size) {
 	const int n_byte = (size + 1) / 2;
 	const unsigned char *lsb = block->data + start + n_byte - 1;
 
-	assert(0 <= size && size <= 8 && "memory operands size should be within this range");
+	assert(0 <= size && size <= 8 && "memory read should be within this range");
 	assert(0 <= start && lsb < block->data + BLOCK_SIZE && "referenced cells should be within this range");
 
 	unsigned int result = 0;
@@ -111,9 +112,38 @@ void write_value_to_memory(Block *block, int start, int size, unsigned int value
 }
 
 bool set_load_address(Block *block, unsigned int address) {
-	if (address > BLOCK_SIZE) return false;
+	if (address > BLOCK_SIZE) {
+		fprintf(stderr, "load address exceeds the memory limit\n");
+		return false;
+	}
 	block->load_address = address;
 	return true;
+}
+
+void set_breakpoint(FILE *out, Block *block, unsigned int address) {
+	unsigned int *value = malloc(sizeof(unsigned int));
+	*value = address;
+	add_to_list(block->breakpoints, value);
+
+	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link) {
+		if (*node->value == address) {
+			fprintf(out, "[error] breakpoint %X already exists\n", address);
+		}
+		return;
+	}
+
+	fprintf(out, "[ok] create breakpoint %X\n", address);
+}
+
+bool is_breakpoint(Block *block, unsigned int address, unsigned int length) {
+	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link) {
+		if (address <= *node->value && address < length) return true;
+	return false;
+}
+
+void clear_breakpoints(Block *block) {
+	free_list(block->breakpoints, free);
+	block->breakpoints = new_list();
 }
 
 

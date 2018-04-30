@@ -2,15 +2,24 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "generic_list.h"
+
 #define BLOCK_SIZE 1048576
 #define BLOCK_BUFFER_SIZE 32
 #define MAX_DUMP_LENGTH 1000000
+
+typedef enum _Register {
+	A = 0, X = 1, L = 2, B = 3, 
+	S = 4, T = 5, PC = 8, SW = 9,
+} Register;
 
 typedef struct _Block {
 	unsigned char _buffer[32];
 	unsigned char data[BLOCK_SIZE];
 	int current;
 	unsigned int load_address;
+	unsigned int registers[9];
+	List breakpoints;
 } Block;
 /*	Description
  *	A memory block that stores 1 megabyte of unsigned chars.
@@ -84,6 +93,15 @@ bool set_load_address(Block *block, unsigned int address);
  * TODO
  *
  */
+
+void set_breakpoint(FILE *out, Block *block, unsigned int address);
+// TODO
+
+bool is_breakpoint(Block *block, unsigned int address, unsigned int length);
+// TODO
+
+void clear_breakpoints(Block *block);
+// TODO
 
 
 #if defined(TEST) && !defined(MEMORY_C)
