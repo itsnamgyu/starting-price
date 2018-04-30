@@ -14,8 +14,9 @@ typedef enum _Register {
 } Register;
 
 typedef struct _Block {
-	unsigned char _buffer[32];
+	unsigned char _prebuffer[32];
 	unsigned char data[BLOCK_SIZE];
+	unsigned char _postbuffer[32];
 	int current;
 	unsigned int load_address;
 	unsigned int registers[9];

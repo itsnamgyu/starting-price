@@ -23,8 +23,10 @@ Block *new_memory_block() {
 	for (int i = 0; i < BLOCK_SIZE; ++i)
 		block->data[i] = '\0';
 
-	for (int i = 0; i < BLOCK_BUFFER_SIZE; ++i)
-		block->_buffer[i] = '\0';
+	for (int i = 0; i < BLOCK_BUFFER_SIZE; ++i) {
+		block->_prebuffer[i] = '\0';
+		block->_postbuffer[i] = '\0';
+	}
 	
 	block->current = 0;
 	block->break_points = new_list();
