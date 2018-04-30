@@ -9,7 +9,7 @@ endif
 
 OBJDIR = obj
 
-SRC = utility.c register.c generic_list.c generic_dict.c file.c hashtable.c help.c memory.c parser.c interpreter.c symbol.c reserved.c assemble.c asm_helper.c $(MAINC)
+SRC = register.c generic_list.c generic_dict.c file.c hashtable.c help.c memory.c parser.c interpreter.c symbol.c reserved.c assemble.c asm_helper.c estab.c run.c loader.c utility.c $(MAINC)
 #OBJ = $(SRC:.c=.o)
 OBJ = $(patsubst %.c, $(OBJDIR)/%.o, $(SRC))
 
