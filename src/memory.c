@@ -29,10 +29,10 @@ Block *new_memory_block() {
 	}
 	
 	block->current = 0;
-	block->break_points = new_list();
+	block->breakpoints = new_list();
 
 	for (int i = 0; i < 9; ++i)
-		registers[i] = 0;
+		block->registers[i] = 0;
 
 	return block;
 }
@@ -131,7 +131,7 @@ void set_breakpoint(FILE *out, Block *block, unsigned int address) {
 	add_to_list(block->breakpoints, value);
 
 	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link) {
-		if (*node->value == address) {
+		if (*(unsigned int*) node->value == address) {
 			fprintf(out, "[error] breakpoint %X already exists\n", address);
 		}
 		return;
@@ -141,8 +141,9 @@ void set_breakpoint(FILE *out, Block *block, unsigned int address) {
 }
 
 int get_breakpoint(Block *block, unsigned int address, unsigned int length) {
-	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link) {
-		if (address <= *node->value && *node->value < address + length) return *node->value;
+	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link)
+		if (address <= *(unsigned int*) node->value && *(unsigned int*) node->value < address + length) 
+			return *(unsigned int*) node->value;
 	return -1;
 }
 
@@ -194,8 +195,8 @@ int main(void) {
 			set_memory(block, i, i % 256);
 
 		for (int i = 0; i < 256; ++i) {
-			assert(read_value_from_memory(block, i, 1) == i % 16);
-			assert(read_value_from_memory(block, i, 2) == i);
+			assert(read_value_from_memory(block, i, 1) == (unsigned int) i % 16);
+			assert(read_value_from_memory(block, i, 2) == (unsigned int) i);
 		}
 
 		assert(read_value_from_memory(block, 0, 3) == 1);
