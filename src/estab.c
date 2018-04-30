@@ -30,7 +30,7 @@ bool add_to_estab(Estab *estab, const char *symbol, int reference_number, int ad
 	bool add_symbol = (symbol != NULL);
 	bool add_reference = (reference_number != -1);
 
-	assert(add_symbol || add_reference && "must specify symbol or reference");
+	assert(add_symbol || (add_reference && "must specify symbol or reference"));
 	// should have been checked during OBJ read
 	assert(address >= 0 && "address must be non-negative");
 	// should have been checked during OBJ read (since it's hex?)

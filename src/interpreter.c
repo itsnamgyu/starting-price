@@ -95,7 +95,7 @@ void add_to_history(Interpreter *ip, const char *command_string) {
 void fprint_command_history(FILE *out, Interpreter *ip) {
 	int i = 1;
 	for (LinkedNode *node = ip->history->head->link; node; node = node->link, ++i)
-		fprintf(out, "%d\t%s\n", i, node->value);
+		fprintf(out, "%d\t%s\n", i, (char*) node->value);
 }
 
 bool interpret_and_free(Interpreter *ip, ParsedCommand *pc) {
