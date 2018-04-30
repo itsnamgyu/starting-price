@@ -68,3 +68,5 @@ void fprint_command_history(FILE *out, Interpreter *ip);
 /*
  *  Print the list of commands that were successfully interpreted/executed by the interpeter
  */
+
+void add_to_history(Interpreter *ip, const char *command_string);
