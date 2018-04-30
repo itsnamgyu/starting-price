@@ -138,10 +138,10 @@ void set_breakpoint(FILE *out, Block *block, unsigned int address) {
 	fprintf(out, "[ok] create breakpoint %X\n", address);
 }
 
-bool is_breakpoint(Block *block, unsigned int address, unsigned int length) {
+int get_breakpoint(Block *block, unsigned int address, unsigned int length) {
 	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link) {
-		if (address <= *node->value && address < length) return true;
-	return false;
+		if (address <= *node->value && address < length) return *node->value;
+	return -1;
 }
 
 void clear_breakpoints(Block *block) {

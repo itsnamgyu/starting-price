@@ -97,7 +97,7 @@ bool set_load_address(Block *block, unsigned int address);
 void set_breakpoint(FILE *out, Block *block, unsigned int address);
 // TODO
 
-bool is_breakpoint(Block *block, unsigned int address, unsigned int length);
+int get_breakpoint(Block *block, unsigned int address, unsigned int length);
 // TODO
 
 void clear_breakpoints(Block *block);
