@@ -8,11 +8,6 @@
 #define BLOCK_BUFFER_SIZE 32
 #define MAX_DUMP_LENGTH 1000000
 
-typedef enum _Register {
-	A = 0, X = 1, L = 2, B = 3, 
-	S = 4, T = 5, PC = 8, SW = 9,
-} Register;
-
 typedef struct _Block {
 	unsigned char _prebuffer[32];
 	unsigned char data[BLOCK_SIZE];
@@ -20,7 +15,7 @@ typedef struct _Block {
 	int current;
 	unsigned int load_address;
 	unsigned int registers[9];
-	List breakpoints;
+	List *breakpoints;
 } Block;
 /*	Description
  *	A memory block that stores 1 megabyte of unsigned chars.
