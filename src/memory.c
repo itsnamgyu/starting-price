@@ -30,6 +30,7 @@ Block *new_memory_block() {
 	
 	block->current = 0;
 	block->breakpoints = new_list();
+	block->start_address = 0;
 
 	for (int i = 0; i < 15; ++i)
 		block->registers[i] = 0;
@@ -128,15 +129,15 @@ bool set_load_address(Block *block, unsigned int address) {
 void set_breakpoint(FILE *out, Block *block, unsigned int address) {
 	unsigned int *value = malloc(sizeof(unsigned int));
 	*value = address;
-	add_to_list(block->breakpoints, value);
 
 	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link) {
 		if (*(unsigned int*) node->value == address) {
 			fprintf(out, "[error] breakpoint %X already exists\n", address);
+			return;
 		}
-		return;
 	}
 
+	add_to_list(block->breakpoints, value);
 	fprintf(out, "[ok] create breakpoint %X\n", address);
 }
 
@@ -150,6 +151,17 @@ int get_breakpoint(Block *block, unsigned int address, unsigned int length) {
 void clear_breakpoints(Block *block) {
 	free_list(block->breakpoints, free);
 	block->breakpoints = new_list();
+}
+
+void print_breakpoints(Block *block) {
+	printf("breakpoint\n");
+	printf("----------\n");
+
+	if (!block->breakpoints->head->link)
+		printf("there are no breakpoints\n");
+
+	for (LinkedNode *node = block->breakpoints->head->link; node; node = node->link)
+		printf("%X\n", *(unsigned int*) node->value);
 }
 
 

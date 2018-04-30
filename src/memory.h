@@ -16,6 +16,7 @@ typedef struct _Block {
 	unsigned int load_address;
 	unsigned int registers[15];
 	List *breakpoints;
+	unsigned int start_address;
 } Block;
 /*	Description
  *	A memory block that stores 1 megabyte of unsigned chars.
@@ -85,19 +86,15 @@ void write_value_to_memory(Block *block, int start, int size, unsigned int value
  */
 
 bool set_load_address(Block *block, unsigned int address);
-/*
- * TODO
- *
- */
 
 void set_breakpoint(FILE *out, Block *block, unsigned int address);
-// TODO
 
 int get_breakpoint(Block *block, unsigned int address, unsigned int length);
-// TODO
 
 void clear_breakpoints(Block *block);
-// TODO
+
+void print_breakpoints(Block *block);
+
 
 
 #if defined(TEST) && !defined(MEMORY_C)
