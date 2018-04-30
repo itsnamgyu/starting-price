@@ -14,7 +14,7 @@ typedef struct _Block {
 	unsigned char _postbuffer[32];
 	int current;
 	unsigned int load_address;
-	unsigned int registers[9];
+	unsigned int registers[15];
 	List *breakpoints;
 } Block;
 /*	Description

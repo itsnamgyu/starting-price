@@ -31,7 +31,7 @@ Block *new_memory_block() {
 	block->current = 0;
 	block->breakpoints = new_list();
 
-	for (int i = 0; i < 9; ++i)
+	for (int i = 0; i < 15; ++i)
 		block->registers[i] = 0;
 
 	return block;
