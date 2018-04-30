@@ -101,6 +101,7 @@ void run(Block *block) {
 			printf("%-2s: %012X\n", "S", block->registers[S]);
 			printf("\t%-2s: %012X\n", "T", block->registers[T]);
 			printf("End program.\n");
+			block->registers[PC] = block->start_address;
 			break;
 		}
 
@@ -116,13 +117,14 @@ void run(Block *block) {
 			printf("\t%-2s: %012X ", "B", block->registers[B]);
 			printf("%-2s: %012X\n", "S", block->registers[S]);
 			printf("\t%-2s: %012X\n", "T", block->registers[T]);
-			printf("Stop at checkpoint [%X]\n", breakpoint);
+			printf("Stop at checkpoint[%X]\n", breakpoint);
 			break;
 		}
 
 		first = false;
 		block->registers[PC] += format;
 		Operand operand = get_operand(block, ext_inst);
+		if (operand.memory_address == -1) return;
 		op_functions[get_opcode(ext_inst)](block, operand);
 	}
 }
@@ -168,7 +170,7 @@ static Operand get_operand(Block *block, unsigned int ext_inst) {
 			break;
 		default:
 			fprintf(stderr, "opcode %X is not supported\n", opcode * 4);
-			exit(-1);
+			operand.memory_address = -1;
 			return operand;
 	}
 
