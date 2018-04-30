@@ -166,6 +166,7 @@ static bool pass2(FILE **files, int n_files, Block *block, Estab *estab) {
 				case 'E':
 					if (fscanf(file, "%06X", &address) != 1) break;
 					block->registers[PC] = address + cs_address;
+					block->start_address = address + cs_address;
 					break;
 				case 'D':
 				case '.':
