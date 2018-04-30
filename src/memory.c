@@ -29,6 +29,9 @@ Block *new_memory_block() {
 	block->current = 0;
 	block->break_points = new_list();
 
+	for (int i = 0; i < 9; ++i)
+		registers[i] = 0;
+
 	return block;
 }
 
