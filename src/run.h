@@ -4,4 +4,4 @@
 
 #include "memory.h"
 
-run(Block *block);
+void run(Block *block);
