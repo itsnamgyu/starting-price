@@ -77,7 +77,7 @@ unsigned int read_value_from_memory(Block *block, int start, int size) {
 	const unsigned char *lsb = block->data + start + n_byte - 1;
 
 	assert(0 <= size && size <= 8 && "memory read should be within this range");
-	assert(0 <= start && start < block->data + BLOCK_SIZE && "referenced cells should be within this range");
+	assert(0 <= start && start < BLOCK_SIZE && "referenced cells should be within this range");
 
 	unsigned int result = 0;
 	for (int i = 0; i < n_byte; ++i) {
@@ -98,7 +98,7 @@ void write_value_to_memory(Block *block, int start, int size, unsigned int value
 	unsigned char * const lsb = block->data + start + n_byte - 1;
 
 	assert(0 <= size && size <= 8 && "memory operands size should be within this range");
-	assert(0 <= start && start < block->data + BLOCK_SIZE && "referenced cells should be within this range");
+	assert(0 <= start && start < BLOCK_SIZE && "referenced cells should be within this range");
 	// assert((unsigned int) value / (1 << size * 4) == 0 && "value must fit within the specified size");
 	// commented out > allow overflow since a valid program will return it
 
