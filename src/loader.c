@@ -4,9 +4,11 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+#include "generic_list.h"
 #include "estab.h"
 #include "memory.h"
 #include "utility.h"
+#include "register.h"
 
 
 static bool pass1(FILE **files, int n_files, Block *block, Estab *estab);
@@ -24,6 +26,7 @@ bool load(FILE **files, int n_files, Block *block) {
 
 	if (!pass1(files, n_files, block, estab)) return false;
 	if (!pass2(files, n_files, block, estab)) return false;
+
 	
 	return true;
 }
@@ -162,10 +165,8 @@ static bool pass2(FILE **files, int n_files, Block *block, Estab *estab) {
 					break;
 				case 'E':
 					if (fscanf(file, "%06X", &address) != 1) break;
-					// TODOTDOTODOTDOTDOTDOOTDOOTDO
-					// TODO
-					// set pc to address
-					
+					block->registers[PC] = address + cs_address;
+					break;
 				case 'D':
 				case '.':
 					for (int c = 'a'; c != EOF && c != '\n'; c = fgetc(file));
@@ -174,6 +175,11 @@ static bool pass2(FILE **files, int n_files, Block *block, Estab *estab) {
 		}
 		cs_address += cs_length;
 	}
+
+	char length_buffer[10];
+	sprintf(length_buffer, "%04X", cs_address - block->load_address);
+	printf("----------------------------------------------------\n");
+	printf("%-13s%-13s%-16s%-13s\n", "", "", "total length", length_buffer);
 
 	return true;
 }
