@@ -8,6 +8,11 @@
 #include "interpreter.h"
 #include "global.h"
 #include "assemble.h"
+#include "estab.h"
+#include "register.h"
+#include "run.h"
+#include "loader.h"
+#include "utility.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,6 +57,14 @@ static int opcodelist_0(FILE *out, ParsedCommand *pc);
 static int opcode_1(FILE *out, ParsedCommand *pc);
 
 static int type_1(FILE *out, ParsedCommand *pc);
+
+static int bp_1(FILE *out, ParsedCommand *pc);
+
+static int bp_0(FILE *out, ParsedCommand *pc);
+
+static int progaddr_1(FILE *out, ParsedCommand *pc);
+
+static int run_0(FILE *out, ParsedCommand *pc);
 
 Global G;
 
@@ -99,6 +112,10 @@ int main(void) {
 	add_operation(ip, "type", 1, type_1);
 	add_operation(ip, "assemble", 1, assemble_1);
 	add_operation(ip, "symbol", 0, symbol_0);
+	add_operation(ip, "bp", 0, bp_0);
+	add_operation(ip, "bp", 1, bp_1);
+	add_operation(ip, "progaddr", 1, progaddr_1);
+	add_operation(ip, "run", 0, run_0);
 
 	char command[COMMAND_LENGTH];
 	ParsedCommand *pc;
@@ -111,6 +128,24 @@ int main(void) {
 		if (!*command) continue;
 
 		int error_code;
+		// exception for loader
+		char filenames[3][100];
+		FILE *files[3];
+		int res = sscanf(command, "loader %s %s %s", filenames[0], filenames[1], filenames[2]);
+		if (res > 0 ) {
+			for (int i = 0; i < res; ++i) {
+				if (!(files[i] = fopen(filenames[i], "r"))) {
+					printf("could not open file %s\n", filenames[0]);
+					continue;
+				}
+			}
+
+			if (load(files, res, G.block))
+				add_to_history(ip, command);
+			continue;
+		}
+
+
 		if (!(pc = parse_command(command, &error_code))) {
 			switch (error_code) {
 				case TOO_MANY_ARGUMENTS_ERROR:
@@ -292,5 +327,41 @@ static int opcodelist_0(FILE *out, ParsedCommand *pc) {
 
 static int type_1(FILE *out, ParsedCommand *pc) {
 	fprint_file(out, pc->arguments[0]);
+	return 1;
+}
+
+static int bp_1(FILE *out, ParsedCommand *pc) {
+	unsigned int value;
+	if (!strcmp(pc->arguments[0], "clear")) {
+		clear_breakpoints(G.block);
+	} else {
+		if (!hex_to_uint(pc->arguments[0], &value) || value >= BLOCK_SIZE) {
+			fprintf(out, "error: invalid value\n");
+			return 0;
+		}
+		set_breakpoint(stdout, G.block, value);
+	}
+
+	return 1;
+}
+
+static int bp_0(FILE *out, ParsedCommand *pc) {
+	print_breakpoints(G.block);
+	return 1;
+}
+
+static int progaddr_1(FILE *out, ParsedCommand *pc) {
+	unsigned int value;
+	if (!hex_to_uint(pc->arguments[0], &value) || value >= BLOCK_SIZE) {
+		fprintf(out, "error: invalid value\n");
+		return 0;
+	}
+
+	G.block->load_address = value;
+	return 1;
+}
+
+static int run_0(FILE *out, ParsedCommand *pc) {
+	run(G.block);
 	return 1;
 }
