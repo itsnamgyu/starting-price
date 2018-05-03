@@ -42,5 +42,21 @@ assignment2:
 	tar -cvf $(ASSIGNMENT)2.tar $(ASSIGNMENT)2
 	rm -r $(ASSIGNMENT)2
 	
+assignment3:
+	-rm -r $(ASSIGNMENT)3
+	-rm -r .t
+	mkdir .t
+	cp README.md .t/README
+	cp src/* .t
+	cp docs/Report\ 3.docx .t/Document.doc
+	mv .t/main.c .t/20161662.c
+	echo 'MAINC = 20161662.c\n' | cat - .t/Makefile > .temp
+	mv .temp .t/Makefile
+	echo 'TARGET = 20161662.out' | cat - .t/Makefile > .temp
+	mv .temp .t/Makefile
+	mv .t $(ASSIGNMENT)3
+	tar -cvf $(ASSIGNMENT)3.tar $(ASSIGNMENT)3
+	rm -r $(ASSIGNMENT)3
+
 .DEFAULT :
 	cd src && $(MAKE) $@
